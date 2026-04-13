@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Tri-colour progress bar drawable for budget alert — green → amber → red -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Background track — low-opacity white rail -->
+    <item android:id="@android:id/background">
+        <shape android:shape="rectangle">
+            <corners android:radius="6dp"/>
+            <solid android:color="#1AFFFFFF"/>
+        </shape>
+    </item>
+
+    <!-- Filled progress — gradient sweeps green (safe) → amber (warning) → red (exceeded) -->
+    <item android:id="@android:id/progress">
+        <clip>
+            <shape android:shape="rectangle">
+                <corners android:radius="6dp"/>
+                <gradient
+                    android:type="linear"
+                    android:angle="0"
+                    android:startColor="#4CD97B"
+                    android:centerColor="#FFAA00"
+                    android:endColor="#FF4444"/>
+            </shape>
+        </clip>
+    </item>
+
+</layer-list>

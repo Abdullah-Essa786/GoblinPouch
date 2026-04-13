@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Circular background for the donut percentage indicator -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Outer ring — low-opacity white stroke acting as the unfilled track -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#00000000"/>
+            <stroke
+                android:width="8dp"
+                android:color="#1AFFFFFF"/>
+        </shape>
+    </item>
+
+    <!-- Inner filled circle — dark navy so the centre looks cut out -->
+    <item
+        android:top="8dp"
+        android:bottom="8dp"
+        android:left="8dp"
+        android:right="8dp">
+        <shape android:shape="oval">
+            <solid android:color="#0A1835"/>
+        </shape>
+    </item>
+
+    <!-- Progress arc — cyan blue stroke overlaid on the track ring.
+         This is a static 63% visual approximation using a sweep gradient.
+         For a true dynamic arc, replace this drawable with a custom View
+         that draws on Canvas using Paint.Style.STROKE + drawArc(). -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#00000000"/>
+            <stroke
+                android:width="8dp"
+                android:color="#4FC3F7"/>
+        </shape>
+    </item>
+
+</layer-list>
