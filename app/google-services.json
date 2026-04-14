@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "582265325733",
+    "project_id": "goblinpouchdemo",
+    "storage_bucket": "goblinpouchdemo.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:582265325733:android:e4bcfcb553f9f351b5254c",
+        "android_client_info": {
+          "package_name": "com.example.goblinpouchdemo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJXmeAXrw4L-uwMZUUWjQAjCgHBRu3Cgo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

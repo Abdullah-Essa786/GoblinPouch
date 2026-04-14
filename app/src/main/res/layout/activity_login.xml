@@ -40,7 +40,7 @@
             android:layout_marginBottom="10dp"
             android:background="@drawable/input_fields_bg"
             android:hint="Email"
-            android:hintTextColor="#AAAAAA"
+            android:textColorHint="#AAAAAA"
             android:inputType="textEmailAddress"
             android:padding="12dp"
             android:textColor="#FFFFFF" />
@@ -52,7 +52,7 @@
             android:layout_marginBottom="10dp"
             android:background="@drawable/input_fields_bg"
             android:hint="Password"
-            android:hintTextColor="#AAAAAA"
+            android:textColorHint="#AAAAAA"
             android:inputType="textPassword"
             android:padding="12dp"
             android:textColor="#FFFFFF" />
