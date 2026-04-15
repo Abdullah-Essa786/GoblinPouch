@@ -21,6 +21,7 @@ class LoginActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        //this may be redundent might edit later
         assignVars()
 
         val txtRegister = findViewById<TextView>(R.id.txtRegister)
@@ -28,7 +29,7 @@ class LoginActivity : AppCompatActivity(){
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
-//checks stuff with email when btn is clicked
+//checks if email exists and if the edt boxes are filled when btn is clicked
         val loginBtn = findViewById<Button>(R.id.btnLogin)
         loginBtn.setOnClickListener {
             val email = emailInput.text.toString().trim()
@@ -38,7 +39,7 @@ class LoginActivity : AppCompatActivity(){
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-
+// calls loop check to see if it exists else it empties the edtboxes and shows popup
             if (!loopCheckEmail()) {
                 emailInput.setText("")
                 passwordInput.setText("")
@@ -49,6 +50,7 @@ class LoginActivity : AppCompatActivity(){
             }
         }
     }
+    //Creates pop up if password is wrong
 
     fun popUpMenu(){
         val builder = AlertDialog.Builder(this)
@@ -59,6 +61,7 @@ class LoginActivity : AppCompatActivity(){
 
     }
 
+    //looping through all emails in db to see if email exists
     fun loopCheckEmail(): Boolean{
         val amountOfEmails = 10 //change based on dbconnection
         var dbEmailInput : String
