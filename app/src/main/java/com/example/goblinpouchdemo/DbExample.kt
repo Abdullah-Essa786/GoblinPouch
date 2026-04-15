@@ -10,18 +10,10 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.example.goblinpouchdemo.models.Expense
 
 class DbExample {
     private lateinit var dbRef: DatabaseReference
-
-    //Make a data class storing the information you want to pass to the database like this
-    //It's kind of like a model from asp.net mvc, storing the fields you wanna pass
-    //Just make sure they have initial values like this one, even empty strings
-    data class Expense(
-        var name: String = "",
-        var amount: Double = 0.0,
-        var date: String = "",
-    )
 
     fun saveToDatabase() {
 
@@ -32,7 +24,8 @@ class DbExample {
         dbRef = FirebaseDatabase.getInstance().getReference("temp/Name/Expense")
 
         //Pass actual data into the data class (model thing)
-        val expense = Expense("Bought Stuff", 20.00, "2023-04-01")
+        val expense = Expense("Bought Stuff", "Bought some stuff cause why not",
+            20.00, "2023-04-01", "Stuff", "None")
 
         //set value is what gets sent to the database.
         // Essentially pass in the object of the data class
