@@ -1,17 +1,25 @@
 package com.example.goblinpouchdemo
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.auth
 
 class LoginActivity : AppCompatActivity(){
     lateinit var emailInput: EditText
     lateinit var passwordInput: EditText
+    lateinit var binding : LoginActivity
+    private lateinit var auth: FirebaseAuth
 
 
     //Will check if email is found first then if password is correct from db or smth
@@ -19,10 +27,13 @@ class LoginActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val currentUser = auth.currentUser
+        auth = Firebase.auth
         setContentView(R.layout.activity_login)
 
+        emailInput = findViewById(R.id.etEmail)
+        passwordInput = findViewById(R.id.etPassword)
         //this may be redundent might edit later
-        assignVars()
 
         val txtRegister = findViewById<TextView>(R.id.txtRegister)
         txtRegister.setOnClickListener {
@@ -49,6 +60,7 @@ class LoginActivity : AppCompatActivity(){
                 Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show()
             }
         }
+
     }
     //Creates pop up if password is wrong
 
@@ -77,6 +89,8 @@ class LoginActivity : AppCompatActivity(){
 
     }
 
+
+    //this may be redundent will update when sure
     fun checkEmail(dbEmail: String): Boolean{
         if (emailInput.text.toString().equals(dbEmail)){
             return true
@@ -87,10 +101,47 @@ class LoginActivity : AppCompatActivity(){
     }
 
 
-    //seperating actions into funcs so it is easier to follow main code
-    fun assignVars(){
-        emailInput = findViewById(R.id.etEmail)
-        passwordInput = findViewById(R.id.etPassword)
 
+
+//Function is not called yet. Will do so when everything is neet and done
+    fun passChecksToSignIn(email : String, password: String){
+
+        //Checks if email & password is empty if it is then it
+        //returns nothing and displays prompt
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Please enter email and password.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        //Signin call for firebase
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    Log.d(TAG, "signInWithEmailAndPassword:success")
+                    val user = auth.currentUser
+                    updateUI(user)
+                } else {
+                    Log.w(TAG, "signInWithEmailAndPassword:failure", task.exception)
+                    Toast.makeText(
+                        baseContext,
+                        "Authentication failed.",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                    updateUI(null)
+                }
+            }
+    }
+
+    private fun updateUI(user: FirebaseUser?) {
+        if (user != null) {
+            // User is signed in, navigate to main screen
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish() // prevents going back to login screen
+        } else {
+            // Sign in failed, optionally clear the input fields
+            binding.emailInput.text?.clear()
+            binding.passwordInput.text?.clear()
+        }
     }
 }
