@@ -27,8 +27,10 @@ class LoginActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val currentUser = auth.currentUser
-        auth = Firebase.auth
+
+
+        val currentUser = Firebase.auth.currentUser
+
         setContentView(R.layout.activity_login)
 
         emailInput = findViewById(R.id.etEmail)
