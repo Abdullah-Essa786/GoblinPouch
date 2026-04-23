@@ -1,0 +1,70 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/card_bg">
+
+    <!-- Monthly Budget -->
+    <LinearLayout
+        android:id="@+id/btnSetMonthlyBudget"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackground">
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_wallet"
+            android:contentDescription="Budget"
+            android:layout_marginEnd="12dp"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Monthly Budget"
+            android:textColor="#AAAAAA"
+            android:textSize="13sp"/>
+        <TextView
+            android:id="@+id/tvMonthlyBudget"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="R0"
+            android:textColor="#FFFFFF"
+            android:textSize="13sp"/>
+    </LinearLayout>
+
+    <!-- Divider -->
+    <View android:layout_width="match_parent" android:layout_height="0.5dp" android:background="#22FFFFFF" android:layout_marginStart="46dp"/>
+
+    <!-- Budget Alerts -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp">
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_bell"
+            android:contentDescription="Alerts"
+            android:layout_marginEnd="12dp"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Budget Alerts"
+            android:textColor="#AAAAAA"/>
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switchBudgetAlerts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:theme="@style/GreenSwitchTheme"/>
+
+    </LinearLayout>
+</LinearLayout>

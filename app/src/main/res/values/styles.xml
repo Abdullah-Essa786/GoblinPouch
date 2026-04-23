@@ -1,0 +1,5 @@
+<style name="GreenSwitchTheme" parent="Theme.AppCompat.Light">
+    <item name="colorControlActivated">#00FFAA</item>
+    <item name="android:thumbTint">#FFFFFF</item>
+    <item name="android:trackTint">#4FC3F7</item>
+</style>

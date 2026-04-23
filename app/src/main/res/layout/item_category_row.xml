@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="6dp"
+    android:layout_marginHorizontal="12dp"
+    android:background="@drawable/card_bg"
+    android:padding="12dp">
+
+    <!-- Category Icon -->
+    <ImageView
+        android:id="@+id/ivCategoryIcon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_category_placeholder"
+        android:contentDescription="Category icon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <!-- Category Name -->
+    <TextView
+        android:id="@+id/tvCategoryName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Groceries"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:maxLines="1"
+        android:ellipsize="end"
+        app:layout_constraintStart_toEndOf="@id/ivCategoryIcon"
+        app:layout_constraintTop_toTopOf="@id/ivCategoryIcon"
+        app:layout_constraintEnd_toStartOf="@id/tvAmountSpent"
+        android:layout_marginStart="12dp"/>
+
+    <!-- Amount Spent -->
+    <TextView
+        android:id="@+id/tvAmountSpent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="R1 240"
+        android:textColor="#00E676"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Budget Limit -->
+    <TextView
+        android:id="@+id/tvBudgetLimit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="of R2 000"
+        android:textColor="#AAAAAA"
+        android:textSize="12sp"
+        app:layout_constraintTop_toBottomOf="@id/tvAmountSpent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Date Range -->
+    <TextView
+        android:id="@+id/tvDateRange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Apr 1 – Apr 30"
+        android:textColor="#7A8FA6"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@id/ivCategoryIcon"
+        app:layout_constraintTop_toBottomOf="@id/tvCategoryName"
+        android:layout_marginStart="12dp"/>
+
+    <!-- Progress Bar -->
+    <ProgressBar
+        android:id="@+id/progressCategory"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="0dp"
+        android:layout_height="6dp"
+        android:progressDrawable="@drawable/progress_budget"
+        android:max="100"
+        android:progress="0"
+        app:layout_constraintTop_toBottomOf="@id/tvDateRange"
+        app:layout_constraintStart_toStartOf="@id/tvDateRange"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="6dp"/>
+
+    <!-- Progress Label -->
+    <TextView
+        android:id="@+id/tvProgressLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="62% Used"
+        android:textColor="#AAAAAA"
+        android:textSize="11sp"
+        app:layout_constraintTop_toBottomOf="@id/progressCategory"
+        app:layout_constraintStart_toStartOf="@id/progressCategory"
+        android:layout_marginTop="4dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
