@@ -12,16 +12,16 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.example.goblinpouchdemo.models.Expense
 
-class DbExample {
+public class DbExample {
     private lateinit var dbRef: DatabaseReference
 
-    fun saveToDatabase() {
+    public fun saveToDatabase() {
 
         //path to the database. Replace "Expense" with the database needed for your feature.
         //And name with your name
         //keep the temp/ cause the database will change later once the firebase authentication is added
         //Using temp/Name will stop the confusion cause each feature will have its own db folder for now
-        dbRef = FirebaseDatabase.getInstance().getReference("temp/Name/Expense")
+        dbRef = FirebaseDatabase.getInstance().getReference("temp/Abdullah/Expense")
 
         //Pass actual data into the data class (model thing)
         val expense = Expense("Bought Stuff", "Bought some stuff cause why not",
