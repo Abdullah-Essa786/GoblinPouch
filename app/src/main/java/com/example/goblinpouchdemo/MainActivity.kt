@@ -21,10 +21,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.RecieptTest.setOnClickListener {
-            val intent = Intent(this, ReceiptCapture::class.java)
-            startActivity(intent)
-        }
 
     }
 }

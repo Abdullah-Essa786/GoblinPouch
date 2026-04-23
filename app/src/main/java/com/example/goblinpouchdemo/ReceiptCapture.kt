@@ -22,6 +22,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.LifecycleOwner
 import com.example.goblinpouchdemo.databinding.ActivityReceiptCaptureBinding
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -33,10 +34,11 @@ import java.util.concurrent.Executors
 class ReceiptCapture : AppCompatActivity() {
 
     private lateinit var binding : ActivityReceiptCaptureBinding
-    private val databaseReference = FirebaseDatabase.getInstance().getReference("temp/Abdullah/Images")
+    private lateinit var databaseReference : DatabaseReference
     private lateinit var imageCapture: ImageCapture
     private lateinit var outPutDirectory: File
     private lateinit var cameraExecutor: ExecutorService
+    private val currentUserID: String = "Abdullah"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +46,8 @@ class ReceiptCapture : AppCompatActivity() {
 
         binding = ActivityReceiptCaptureBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        databaseReference = FirebaseDatabase.getInstance().getReference("temp/$currentUserID/Expense")
 
         if (allPermissionsGranted()){
             startCamera()
@@ -130,6 +134,10 @@ class ReceiptCapture : AppCompatActivity() {
 
     private fun saveImageToFirebase(bitmap: Bitmap){
         val b = ByteArrayOutputStream()
+        //for later when expense screen is made
+//        val expenseId = intent.getStringExtra("EXPENSE_ID") ?: return
+
+        val expenseId = "-Oqui7tr_FM6xuMTVrNY"
 
         // REDUCE QUALITY to 20 or 30.
         // This makes the string small enough for the Realtime Database.
@@ -145,15 +153,15 @@ class ReceiptCapture : AppCompatActivity() {
             return
         }
 
-        val data = mapOf(
-            "image" to base64Image,
-            "timestamp" to System.currentTimeMillis()
-        )
+//        val data = mapOf(
+//            "image" to base64Image
+//        )
 
-        databaseReference.push().setValue(data)
+        databaseReference.child(expenseId).child("attachment").setValue(base64Image)
             .addOnSuccessListener {
                 Toast.makeText(this, "Receipt Saved to DB!", Toast.LENGTH_LONG).show()
                 val intent = Intent(this, ViewReceipt::class.java)
+                intent.putExtra("EXPENSE_ID", "-Oqui7tr_FM6xuMTVrNY")
                 startActivity(intent)
                 finish()
             }
