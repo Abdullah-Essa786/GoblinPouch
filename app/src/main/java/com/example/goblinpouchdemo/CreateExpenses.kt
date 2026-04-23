@@ -19,7 +19,7 @@ class CreateExpenses {
         dbRef = FirebaseDatabase.getInstance()
             .getReference("temp/$userId/expenses")
 
-        val id = dbRef.push().key!!
+        val id = dbRef.push().key ?: return
 
         val expense = Expense(
             id = id,
