@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    SCREEN: Transaction History
-
--->
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -10,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_gradient">
 
-    <!-- TOP NAVIGATION (hamburger + title "History" + icons)-->
+    <!-- Top Nav -->
     <include
         android:id="@+id/topNav"
         layout="@layout/top_nav"
@@ -20,212 +16,137 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- DATE RANGE ROW  -->
+    <!-- Tabs: Month | Week | Day -->
     <LinearLayout
-        android:id="@+id/layoutDateRange"
+        android:id="@+id/layoutTabs"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:background="@drawable/bg_edit"
-        android:padding="12dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:background="@drawable/card_bg"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginTop="12dp"
+        android:padding="2dp"
         app:layout_constraintTop_toBottomOf="@id/topNav"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Calendar icon -->
-        <ImageView
-            android:id="@+id/ivCalendarIcon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/ic_calender"
-            android:contentDescription="Calendar"
-            android:layout_marginEnd="8dp"/>
-
-        <!-- Start Date (clickable) -->
         <TextView
-            android:id="@+id/tvStartDate"
+            android:id="@+id/tabMonth"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Start Date"
+            android:text="Month"
             android:textColor="#FFFFFF"
+            android:gravity="center"
+            android:background="@drawable/bg_btn"
             android:textSize="14sp"/>
 
-        <!-- Arrow separator -->
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/ic_arrow_right"
-            android:contentDescription="to"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"/>
-
-        <!-- End Date (clickable) -->
         <TextView
-            android:id="@+id/tvEndDate"
+            android:id="@+id/tabWeek"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="End Date"
-            android:textColor="#FFFFFF"
+            android:text="Week"
+            android:textColor="#AAAAAA"
+            android:gravity="center"
             android:textSize="14sp"/>
 
-        <!-- Chevron to trigger filter / confirm -->
-        <ImageView
-            android:id="@+id/ivApplyFilter"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/ic_chevron_right"
-            android:contentDescription="Apply filter"
-            android:padding="2dp"/>
-
+        <TextView
+            android:id="@+id/tabDay"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Day"
+            android:textColor="#AAAAAA"
+            android:gravity="center"
+            android:textSize="14sp"/>
     </LinearLayout>
 
-    <!-- TIMELINE LABEL -->
-    <TextView
-        android:id="@+id/tvTimelineLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Timeline: Select a date range"
-        android:textColor="#AAAAAA"
-        android:textSize="12sp"
-        android:gravity="center"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintTop_toBottomOf="@id/layoutDateRange"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <!-- SUMMARY CARD -->
+    <!-- Date Selection Bar -->
     <LinearLayout
-        android:id="@+id/layoutSummaryCard"
+        android:id="@+id/layoutDateSelection"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/card_bg"
-        android:padding="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/tvTimelineLabel"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/layoutTabs"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Row: Total Spending -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_calender"
+            app:tint="#AAAAAA"/>
+
+        <TextView
+            android:id="@+id/tvDateRange"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:text="01 Jan 2025 → 31 Mar 2025"
+            android:textColor="#FFFFFF"
+            android:textSize="13sp"
+            android:background="@drawable/bg_edit"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="6dp"
+            android:layout_marginHorizontal="8dp"/>
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Total Spending:"
-                android:textColor="#FFFFFF"
-                android:textSize="14sp"/>
-
-            <TextView
-                android:id="@+id/tvTotalSpending"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="R0.00"
-                android:textColor="#00FFAA"
-                android:textSize="16sp"
-                android:textStyle="bold"/>
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#33FFFFFF"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"/>
-
-        <!-- Row: Number of Transactions -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Number of Transactions:"
-                android:textColor="#FFFFFF"
-                android:textSize="14sp"/>
-
-            <TextView
-                android:id="@+id/tvTransactionCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0"
-                android:textColor="#00FFAA"
-                android:textSize="16sp"
-                android:textStyle="bold"/>
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#33FFFFFF"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"/>
-
-        <!-- Row: Most Expensive Category -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Most Expensive Category:"
-                android:textColor="#FF6B6B"
-                android:textSize="14sp"/>
-
-            <TextView
-                android:id="@+id/tvMostExpensiveCategory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="—"
-                android:textColor="#FFB347"
-                android:textSize="16sp"
-                android:textStyle="bold"/>
-
-        </LinearLayout>
-
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_export"
+            app:tint="#AAAAAA"/>
     </LinearLayout>
 
-    <!-- CATEGORY BREAKDOWN LIST -->
+    <!-- Graph Container (Placeholder for Line Graph) -->
+    <FrameLayout
+        android:id="@+id/graphContainer"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:background="#0DFFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/layoutDateSelection"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Axis labels and grid placeholders could go here -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12.00"
+            android:textColor="#55FFFFFF"
+            android:textSize="10sp"
+            android:layout_gravity="top|start"
+            android:layout_margin="8dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0.00"
+            android:textColor="#55FFFFFF"
+            android:textSize="10sp"
+            android:layout_gravity="bottom|start"
+            android:layout_margin="8dp"/>
+
+    </FrameLayout>
+
+    <!-- Categories List -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvHistoryCategories"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:clipToPadding="false"
-        android:paddingBottom="8dp"
-        app:layout_constraintTop_toBottomOf="@id/layoutSummaryCard"
+        android:paddingBottom="80dp"
+        app:layout_constraintTop_toBottomOf="@id/graphContainer"
         app:layout_constraintBottom_toTopOf="@id/bottomNav"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- ═══════════════════════════════════════════
-         BOTTOM NAVIGATION
-    ═══════════════════════════════════════════ -->
+    <!-- Bottom Nav -->
     <include
         android:id="@+id/bottomNav"
         layout="@layout/bottom_nav"
