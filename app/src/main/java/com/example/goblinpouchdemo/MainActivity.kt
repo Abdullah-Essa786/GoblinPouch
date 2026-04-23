@@ -1,5 +1,6 @@
 package com.example.goblinpouchdemo
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -19,6 +20,11 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.RecieptTest.setOnClickListener {
+            val intent = Intent(this, ReceiptCapture::class.java)
+            startActivity(intent)
+        }
 
     }
 }
