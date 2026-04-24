@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "582265325733",
+    "firebase_url": "https://goblinpouchdemo-default-rtdb.firebaseio.com",
     "project_id": "goblinpouchdemo",
     "storage_bucket": "goblinpouchdemo.firebasestorage.app"
   },

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    DRAWABLE: no_image_placeholder.xml
+    LOCATION: res/drawable/no_image_placeholder.xml
+    DESIGN:   Refined dark blue game theme. Centred image-frame with minimal
+              landscape silhouette (mountains + sun). Four #00B7EB corner
+              bracket accents. Gaming aesthetic with subtle glows and depth.
+              No text. Clean and immersive.
+-->
+<vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="80dp"
+    android:height="80dp"
+    android:viewportWidth="80"
+    android:viewportHeight="80">
+
+    <!-- Background card - Deep game blue -->
+    <path
+        android:pathData="M10,0 L70,0 Q80,0 80,10 L80,70 Q80,80 70,80 L10,80 Q0,80 0,70 L0,10 Q0,0 10,0 Z"
+        android:fillColor="#0A0F1F"
+        android:strokeColor="#1A1F3A"
+        android:strokeWidth="0.8"/>
+
+    <!-- Frame border - Gaming blue glow -->
+    <path
+        android:pathData="M16,18 L64,18 Q66,18 66,20 L66,62 Q66,64 64,64 L16,64 Q14,64 14,62 L14,20 Q14,18 16,18 Z"
+        android:fillColor="#00000000"
+        android:strokeColor="#1E3A5F"
+        android:strokeWidth="1.2"/>
+
+    <!-- Frame inner fill - Darker blue void -->
+    <path
+        android:pathData="M17,19 L63,19 L63,63 L17,63 Z"
+        android:fillColor="#0F172A"/>
+
+    <!-- Sun - Gaming glow orb -->
+    <path
+        android:pathData="M52,30 A5,5 0 1,1 51.99,30 Z"
+        android:fillColor="#1E40AF"
+        android:strokeColor="#3B82F6"
+        android:strokeWidth="1"/>
+
+    <!-- Sun core glow -->
+    <path
+        android:pathData="M52,30 A2.5,2.5 0 1,1 51.99,30 Z"
+        android:fillColor="#00B7EB"/>
+
+    <!-- Sun outer glow ring -->
+    <path
+        android:pathData="M52,30 A7,7 0 1,1 51.99,30 Z"
+        android:fillColor="#00000000"
+        android:strokeColor="#00B7EB"
+        android:strokeWidth="0.6"
+        android:strokeLineCap="round"/>
+
+    <!-- Left mountain - Shadowed peak -->
+    <path
+        android:pathData="M17,63 L33,40 L46,57 L17,57 Z"
+        android:fillColor="#1E293B"/>
+
+    <!-- Right mountain (taller) - Highlighted ridge -->
+    <path
+        android:pathData="M38,63 L53,43 L63,57 L63,63 Z"
+        android:fillColor="#334155"/>
+
+    <!-- Ground strip - Deep blue earth -->
+    <path
+        android:pathData="M17,57 L63,57 L63,63 L17,63 Z"
+        android:fillColor="#0F172A"/>
+
+    <!-- Horizon line - Gaming scanline -->
+    <path
+        android:pathData="M17,57 L63,57"
+        android:strokeColor="#1E3A5F"
+        android:strokeWidth="0.7"
+        android:strokeLineCap="round"/>
+
+    <!-- Corner bracket: top-left - Game UI accent -->
+    <path
+        android:pathData="M14,27 L14,20 Q14,18 16,18 L23,18"
+        android:fillColor="#00000000"
+        android:strokeColor="#00B7EB"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"/>
+
+    <!-- Corner bracket glow: top-left -->
+    <path
+        android:pathData="M14,27 L14,20 Q14,18 16,18 L23,18"
+        android:fillColor="#00000000"
+        android:strokeColor="#60D2F7"
+        android:strokeWidth="2.4"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"/>
+
+    <!-- Corner bracket: top-right -->
+    <path
+        android:pathData="M57,18 L64,18 Q66,18 66,20 L66,27"
+        android:fillColor="#00000000"
+        android:strokeColor="#00B7EB"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"/>
+
+    <!-- Corner bracket glow: top-right -->
+    <path
+        android:pathData="M57,18 L64,18 Q66,18 66,20 L66,27"
+        android:fillColor="#00000000"
+        android:strokeColor="#60D2F7"
+        android:strokeWidth="2.4"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"/>
+
+    <!-- Corner bracket: bottom-left -->
+    <path
+        android:pathData="M14,55 L14,62 Q14,64 16,64 L23,64"
+        android:fillColor="#00000000"
+        android:strokeColor="#00B7EB"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"/>
+
+    <!-- Corner bracket glow: bottom-left -->
+    <path
+        android:pathData="M14,55 L14,62 Q14,64 16,64 L23,64"
+        android:fillColor="#00000000"
+        android:strokeColor="#60D2F7"
+        android:strokeWidth="2.4"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"/>
+
+    <!-- Corner bracket: bottom-right -->
+    <path
+        android:pathData="M57,64 L64,64 Q66,64 66,62 L66,55"
+        android:fillColor="#00000000"
+        android:strokeColor="#00B7EB"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"/>
+
+    <!-- Corner bracket glow: bottom-right -->
+    <path
+        android:pathData="M57,64 L64,64 Q66,64 66,62 L66,55"
+        android:fillColor="#00000000"
+        android:strokeColor="#60D2F7"
+        android:strokeWidth="2.4"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"/>
+
+</vector>

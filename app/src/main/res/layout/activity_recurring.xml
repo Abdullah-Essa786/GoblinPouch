@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_gradient">
+
+        <!-- Top Navigation -->
+        <include
+            android:id="@+id/topNav"
+            layout="@layout/top_nav"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- Payment Name -->
+        <EditText
+            android:id="@+id/etName"
+            android:hint="Payment name"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#4A6A88"
+            android:background="@drawable/card_bg"
+            android:padding="14dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:layout_constraintTop_toBottomOf="@id/topNav"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- Amount + Billing Date -->
+        <LinearLayout
+            android:id="@+id/layoutAmountDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="16dp"
+            app:layout_constraintTop_toBottomOf="@id/etName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <EditText
+                android:id="@+id/etAmount"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="Amount (R)"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#4A6A88"
+                android:background="@drawable/card_bg"
+                android:padding="14dp"
+                android:layout_marginEnd="6dp"/>
+
+            <TextView
+                android:id="@+id/tvDate"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Billing Date"
+                android:textColor="#4A6A88"
+                android:background="@drawable/card_bg"
+                android:padding="14dp"
+                android:layout_marginStart="6dp"/>
+        </LinearLayout>
+
+        <!-- Icon Grid -->
+        <LinearLayout
+            android:id="@+id/layoutIconGrid"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="16dp"
+            app:layout_constraintTop_toBottomOf="@id/layoutAmountDate"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <!-- Row 1 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginBottom="10dp">
+
+                <ImageButton
+                    android:id="@+id/iconRent"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_rent"
+                    android:scaleType="centerInside"
+                    android:padding="8dp"
+                    android:background="@drawable/bg_icon_selector"
+                    android:contentDescription="Select Rent"/>
+
+                <ImageButton
+                    android:id="@+id/iconGym"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_gym"
+                    android:scaleType="centerInside"
+                    android:padding="8dp"
+                    android:background="@drawable/bg_icon_selector"
+                    android:contentDescription="Select Gym"/>
+
+                <ImageButton
+                    android:id="@+id/iconDstv"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_dstv"
+                    android:scaleType="centerInside"
+                    android:padding="8dp"
+                    android:background="@drawable/bg_icon_selector"
+                    android:contentDescription="Select DStv"/>
+            </LinearLayout>
+
+            <!-- Row 2 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <ImageButton
+                    android:id="@+id/iconSpotify"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_spotify"
+                    android:scaleType="centerInside"
+                    android:padding="8dp"
+                    android:background="@drawable/bg_icon_selector"
+                    android:contentDescription="Select Spotify"/>
+
+                <ImageButton
+                    android:id="@+id/iconNetflix"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_netflix"
+                    android:scaleType="centerInside"
+                    android:padding="8dp"
+                    android:background="@drawable/bg_icon_selector"
+                    android:contentDescription="Select Netflix"/>
+
+                <ImageButton
+                    android:id="@+id/iconShowmax"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_showmax"
+                    android:scaleType="centerInside"
+                    android:padding="8dp"
+                    android:background="@drawable/bg_icon_selector"
+                    android:contentDescription="Select Showmax"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Add Payment Button -->
+        <Button
+            android:id="@+id/btnAdd"
+            android:text="+ Add Recurring Payment"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:background="@drawable/bg_btn"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/layoutIconGrid"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- List Label -->
+        <TextView
+            android:id="@+id/tvListLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your Recurring Payments"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@id/btnAdd"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <!-- Payments List -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvPayments"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="12dp"
+            app:layout_constraintTop_toBottomOf="@id/tvListLabel"
+            app:layout_constraintBottom_toTopOf="@id/bottomNav"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- Bottom Navigation -->
+        <include
+            android:id="@+id/bottomNav"
+            layout="@layout/bottom_nav"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.drawerlayout.widget.DrawerLayout>
