@@ -11,6 +11,8 @@ android {
     viewBinding.enable = true
 
 
+    viewBinding.enable = true
+
     defaultConfig {
         applicationId = "com.example.goblinpouchdemo"
         minSdk = 25
@@ -51,4 +53,22 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.database)
+    implementation(libs.firebase.storage)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    implementation(libs.kotlinx.datetime)
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera.camera2)
+// If you want to additionally use the CameraX Lifecycle library
+    implementation(libs.androidx.camera.lifecycle)
+// If you want to additionally use the CameraX VideoCapture library
+    implementation(libs.androidx.camera.video)
+// If you want to additionally use the CameraX View class
+    implementation(libs.androidx.camera.view)
+// If you want to additionally add CameraX ML Kit Vision Integration
+    implementation(libs.androidx.camera.mlkit.vision)
+// If you want to additionally use the CameraX Extensions library
+    implementation(libs.androidx.camera.extensions)
 }

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/bg_gradient">
+
+    <!-- Top nav -->
+    <include layout="@layout/top_nav"/>
+
+    <!-- Scroll area -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Category Name -->
+            <Spinner
+                android:id="@+id/spinnerCategoryName"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@drawable/card_bg"
+                android:paddingHorizontal="14dp"
+                android:layout_marginBottom="12dp"/>
+
+            <!-- Frequency -->
+            <Spinner
+                android:id="@+id/spinnerFrequency"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@drawable/card_bg"
+                android:paddingHorizontal="14dp"
+                android:layout_marginBottom="12dp"/>
+
+            <!-- Repeat toggle -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="14dp"
+                android:background="@drawable/card_bg"
+                android:layout_marginBottom="16dp">
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:src="@drawable/ic_repeat"
+                    android:layout_marginEnd="10dp"
+                    android:contentDescription="Repeat toggle icon"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Repeat"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:textStyle="bold"/>
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchRepeat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:thumbTint="#FFFFFF"
+                    android:trackTint="#4FC3F7"/>
+            </LinearLayout>
+
+            <!-- Label -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Choose Icon"
+                android:textColor="#AFCBFF"
+                android:textSize="12sp"
+                android:textAllCaps="true"
+                android:letterSpacing="0.08"
+                android:layout_marginBottom="10dp"/>
+
+            <!-- Icon Grid -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/card_bg"
+                android:padding="12dp"
+                android:layout_marginBottom="24dp">
+
+                <!-- Row 1 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginBottom="10dp">
+
+                    <ImageButton
+                        android:id="@+id/iconHaircut"
+                        android:layout_width="0dp"
+                        android:layout_height="56dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_haircut"
+                        android:background="@drawable/bg_icon_selector"
+                        android:contentDescription="Select haircut category"/>
+
+                    <ImageButton
+                        android:id="@+id/iconLuxury"
+                        android:layout_width="0dp"
+                        android:layout_height="56dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_luxury"
+                        android:background="@drawable/bg_icon_selector"
+                        android:contentDescription="Select luxury category"/>
+
+                    <ImageButton
+                        android:id="@+id/iconSnacks"
+                        android:layout_width="0dp"
+                        android:layout_height="56dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_snacks"
+                        android:background="@drawable/bg_icon_selector"
+                        android:contentDescription="Select snacks category"/>
+                </LinearLayout>
+
+                <!-- Row 2 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <ImageButton
+                        android:id="@+id/iconDinners"
+                        android:layout_width="0dp"
+                        android:layout_height="56dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_dinners"
+                        android:background="@drawable/bg_icon_selector"
+                        android:contentDescription="Select dinners category"/>
+
+                    <ImageButton
+                        android:id="@+id/iconGoingOut"
+                        android:layout_width="0dp"
+                        android:layout_height="56dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_going_out"
+                        android:background="@drawable/bg_icon_selector"
+                        android:contentDescription="Select going out category"/>
+
+                    <ImageButton
+                        android:id="@+id/iconPetrol"
+                        android:layout_width="0dp"
+                        android:layout_height="56dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_petrol"
+                        android:background="@drawable/bg_icon_selector"
+                        android:contentDescription="Select petrol category"/>
+
+                    <ImageButton
+                        android:id="@+id/iconGroceries"
+                        android:layout_width="0dp"
+                        android:layout_height="56dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_grocery"
+                        android:background="@drawable/bg_icon_selector"
+                        android:contentDescription="Select groceries category"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Add Button -->
+            <Button
+                android:id="@+id/btnAddCategory"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:text="+ Add Category"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:background="@drawable/bg_btn"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom nav -->
+    <include layout="@layout/bottom_nav"/>
+</LinearLayout>

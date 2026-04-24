@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Icon button background — normal state is a dark card, selected state adds a cyan border -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Selected — cyan border to show active icon choice -->
+    <item android:state_selected="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="10dp"/>
+            <solid android:color="#1A4FC3F7"/>
+            <stroke android:width="2dp" android:color="#4FC3F7"/>
+        </shape>
+    </item>
+
+    <!-- Normal — same card style as the rest of the UI -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="10dp"/>
+            <solid android:color="#0D1A3A"/>
+            <stroke android:width="1dp" android:color="#1A4FC3F7"/>
+        </shape>
+    </item>
+
+</selector>

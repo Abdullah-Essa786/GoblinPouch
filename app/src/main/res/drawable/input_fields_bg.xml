@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Root element defining a drawables made up of multiple layers to match mock-up design  -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- First layer (background) -->
+    <item>
+        <!-- Defines a rectangular shape -->
+        <shape android:shape="rectangle">
+            <!-- No properties set here (no color, no stroke, no corners),
+                 so this layer is essentially transparent -->
+        </shape>
+    </item>
+
+    <!-- Second layer (border/stroke) -->
+    <item
+        android:top="-2dp"
+        android:left="-2dp"
+        android:right="-2dp">
+        <!-- Negative offsets expand this layer slightly beyond the first layer,
+             making the border appear outside the bounds -->
+
+        <shape android:shape="rectangle">
+            <!-- Defines a border (stroke) around the rectangle -->
+            <stroke
+                android:width="2dp"
+            android:color="#7EC8E3"/> <!-- Border color (white)  thickness (2db)-->
+        </shape>
+    </item>
+
+</layer-list>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    DRAWABLE: btn_bg.xml
+    LOCATION: res/drawable/btn_bg.xml
+
+    DESIGN: Matches the "+ Add Category" button style from the reference image —
+            full-width pill shape, rich blue gradient fill, bright top-edge
+            highlight shimmer, and a glowing blue border.
+
+    STATE LIST:
+        Normal   → vivid blue-to-cyan gradient pill, glowing stroke
+        Pressed  → darker/deeper gradient + tighter border (tactile sink)
+        Focused  → same as normal + brighter stroke (accessibility)
+        Disabled → flat muted navy, no glow
+
+    NOTE ON GRADIENTS IN SELECTORS:
+        Android <selector> cannot hold <gradient> directly as a child of <item>.
+        Each state references a separate layer-list drawable defined inline
+        using <layer-list> inside each <item>.
+-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- ── DISABLED ──────────────────────────────────────────────────── -->
+    <item android:state_enabled="false">
+        <shape android:shape="rectangle">
+            <solid android:color="#1A2A3A"/>
+            <stroke android:width="1dp" android:color="#1E3A5F"/>
+            <corners android:radius="32dp"/>
+        </shape>
+    </item>
+
+    <!-- ── PRESSED ───────────────────────────────────────────────────── -->
+    <item android:state_pressed="true">
+        <layer-list>
+            <!-- Gradient fill (deeper on press) -->
+            <item>
+                <shape android:shape="rectangle">
+                    <gradient
+                        android:type="linear"
+                        android:angle="270"
+                        android:startColor="#0A4FAA"
+                        android:centerColor="#0A70CC"
+                        android:endColor="#0A90DD"
+                        android:centerX="0.5"/>
+                    <corners android:radius="32dp"/>
+                </shape>
+            </item>
+            <!-- Border -->
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="#00000000"/>
+                    <stroke android:width="1.5dp" android:color="#2288EE"/>
+                    <corners android:radius="32dp"/>
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+
+    <!-- ── FOCUSED ───────────────────────────────────────────────────── -->
+    <item android:state_focused="true">
+        <layer-list>
+            <item>
+                <shape android:shape="rectangle">
+                    <gradient
+                        android:type="linear"
+                        android:angle="270"
+                        android:startColor="#1A6ACC"
+                        android:centerColor="#1A88EE"
+                        android:endColor="#22AAFF"
+                        android:centerX="0.5"/>
+                    <corners android:radius="32dp"/>
+                </shape>
+            </item>
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="#00000000"/>
+                    <stroke android:width="2dp" android:color="#00FFAA"/>
+                    <corners android:radius="32dp"/>
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+
+    <!-- ── NORMAL (default) ──────────────────────────────────────────── -->
+    <!--
+        Three layers stacked:
+          1. Dark base fill (depth)
+          2. Main blue gradient (the colour)
+          3. Transparent stroke (glow border)
+        This matches the vivid glass-pill look in the reference image.
+    -->
+    <item>
+        <layer-list>
+            <!-- Base shadow layer -->
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="#0A1E38"/>
+                    <corners android:radius="32dp"/>
+                </shape>
+            </item>
+            <!-- Main gradient fill -->
+            <item
+                android:top="1dp"
+                android:bottom="1dp"
+                android:left="1dp"
+                android:right="1dp">
+                <shape android:shape="rectangle">
+                    <gradient
+                        android:type="linear"
+                        android:angle="270"
+                        android:startColor="#3399FF"
+                        android:centerColor="#1A6EDD"
+                        android:endColor="#0D4EBB"
+                        android:centerX="0.4"/>
+                    <corners android:radius="30dp"/>
+                </shape>
+            </item>
+            <!-- Top highlight shimmer (inner glow) -->
+            <item
+                android:top="1dp"
+                android:bottom="22dp"
+                android:left="10dp"
+                android:right="10dp">
+                <shape android:shape="rectangle">
+                    <solid android:color="#33FFFFFF"/>
+                    <corners android:radius="28dp"/>
+                </shape>
+            </item>
+            <!-- Outer glowing border -->
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="#00000000"/>
+                    <stroke android:width="1.5dp" android:color="#44AAFFCC"/>
+                    <corners android:radius="32dp"/>
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+
+</selector>

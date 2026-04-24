@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">GoblinPouchDemo</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="categories">Categories</string>
+    <string name="add_expense">Add Expense</string>
+    <string name="subscriptions_rent">Subscriptions / Rent</string>
+    <string name="transaction_history">Transaction History</string>
+    <string name="profile">Profile</string>
+    <string-array name="gender_options">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Other</item>
+    </string-array>
 </resources>
