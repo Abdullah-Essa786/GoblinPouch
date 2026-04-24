@@ -28,7 +28,7 @@ class LoginActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
+        auth = Firebase.auth;
         val currentUser = Firebase.auth.currentUser
 
         setContentView(R.layout.activity_login)
@@ -59,6 +59,7 @@ class LoginActivity : AppCompatActivity(){
                 popUpMenu()
             } else {
                 // Email found — add navigation here
+                passChecksToSignIn(email,password)
                 Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show()
             }
         }
