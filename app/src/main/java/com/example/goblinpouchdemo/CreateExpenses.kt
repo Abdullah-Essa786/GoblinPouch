@@ -27,7 +27,7 @@ class CreateExpenses {
             description = description,
             amount = amount,
             date = date,
-            categoryId = categoryId,
+            category = categoryId,
             attachment = ""   // keeping the attachment empty for now
         )
 

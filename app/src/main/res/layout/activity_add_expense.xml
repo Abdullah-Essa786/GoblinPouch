@@ -83,7 +83,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:scaleType="centerCrop"
-        android:background="@drawable/card_bg"
+        android:background="@drawable/bg_card"
         android:visibility="gone"
         android:contentDescription="Receipt preview"
         android:layout_marginStart="16dp"

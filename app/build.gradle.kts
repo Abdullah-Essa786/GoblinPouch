@@ -11,8 +11,6 @@ android {
     viewBinding.enable = true
 
 
-    viewBinding.enable = true
-
     defaultConfig {
         applicationId = "com.example.goblinpouchdemo"
         minSdk = 25

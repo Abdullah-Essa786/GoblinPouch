@@ -24,7 +24,7 @@ public class DbExample {
         dbRef = FirebaseDatabase.getInstance().getReference("temp/Abdullah/Expense")
 
         //Pass actual data into the data class (model thing)
-        val expense = Expense("Bought Stuff", "Bought some stuff cause why not",
+        val expense = Expense("", "Bought Stuff", "Bought some stuff cause why not",
             20.00, "2023-04-01", "Stuff", "None")
 
         //set value is what gets sent to the database.

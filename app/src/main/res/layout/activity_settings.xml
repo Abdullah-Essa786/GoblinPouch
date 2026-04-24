@@ -37,7 +37,7 @@
             android:layout_height="52dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:background="@drawable/card_bg"
+            android:background="@drawable/bg_card"
             android:paddingHorizontal="16dp"
             android:layout_marginBottom="8dp">
 
@@ -70,7 +70,7 @@
             android:layout_height="52dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:background="@drawable/card_bg"
+            android:background="@drawable/bg_card"
             android:paddingHorizontal="16dp"
             android:layout_marginBottom="8dp">
 
@@ -104,7 +104,7 @@
             android:layout_height="52dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:background="@drawable/card_bg"
+            android:background="@drawable/bg_card"
             android:paddingHorizontal="16dp"
             android:clickable="true"
             android:focusable="true"

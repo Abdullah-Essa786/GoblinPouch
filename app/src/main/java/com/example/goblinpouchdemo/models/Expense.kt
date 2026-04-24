@@ -6,6 +6,6 @@ data class Expense (
     var description: String = "",
     var amount: Double = 0.0,
     var date: String = "",
-    var categoryId: String = "",
+    var category: String = "",
     var attachment: String = ""
 )

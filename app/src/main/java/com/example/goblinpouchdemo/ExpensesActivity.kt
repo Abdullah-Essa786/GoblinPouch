@@ -45,8 +45,8 @@ class ExpensesActivity : AppCompatActivity() {
         listenForExpenses()
 
         // when the Add Expense button is tapped, open AddExpenseActivity
-        binding.btnAddExpenses.setOnClickListener {
-            startActivity(Intent(this, AddExpenseActivity::class.java))
+        binding.btnAddExpense.setOnClickListener {
+            startActivity(Intent(this, CreateExpensesActivity::class.java))
         }
     }
 
@@ -68,8 +68,8 @@ class ExpensesActivity : AppCompatActivity() {
         }
 
         // LinearLayoutManager = stack items in a vertical list
-        binding.rvExpenses.layoutManager = LinearLayoutManager(this)
-        binding.rvExpenses.adapter = adapter
+//        binding.rvExpenses.layoutManager = LinearLayoutManager(this)
+//        binding.rvExpenses.adapter = adapter
     }
 
     private fun listenForExpenses() {
