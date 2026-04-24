@@ -1,14 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">GoblinPouchDemo</string>
+
+    <string name="bg_image_desc">Background image</string>
+    <string name="category_totals_title">CATEGORY TOTALS</string>
+    <string name="start_date_hint">Start date (yyyy-MM-dd)</string>
+    <string name="end_date_hint">End date (yyyy-MM-dd)</string>
+    <string name="load_totals">LOAD TOTALS</string>
+    <string name="grand_total_default">Grand Total: R0.00</string>
+
     <string name="dashboard">Dashboard</string>
     <string name="categories">Categories</string>
     <string name="add_expense">Add Expense</string>
     <string name="subscriptions_rent">Subscriptions / Rent</string>
     <string name="transaction_history">Transaction History</string>
     <string name="profile">Profile</string>
-    <string-array name="gender_options">
-        <item>Male</item>
-        <item>Female</item>
-        <item>Other</item>
-    </string-array>
 </resources>
