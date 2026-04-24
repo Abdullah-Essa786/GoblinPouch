@@ -4,6 +4,7 @@ data class User(
     var uid: String = "",
     var username: String = "",
     var email: String = "",
+    var age: Int = 0,
     var phone: String = "",
     var monthlyBudget: Double = 0.0,
     var budgetAlertsEnabled: Boolean = true,

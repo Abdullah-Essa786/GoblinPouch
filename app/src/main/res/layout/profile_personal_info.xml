@@ -54,6 +54,43 @@
         android:background="#22FFFFFF"
         android:layout_marginStart="46dp"/>
 
+    <!-- Age Row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp">
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_default_avatar"
+            android:contentDescription="Age"
+            android:layout_marginEnd="12dp"
+            android:alpha="0.6"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Age"
+            android:textColor="#AAAAAA"
+            android:textSize="13sp"/>
+        <TextView
+            android:id="@+id/tvProfileAge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="21"
+            android:textColor="#FFFFFF"
+            android:textSize="13sp"/>
+    </LinearLayout>
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#22FFFFFF"
+        android:layout_marginStart="46dp"/>
+
     <!-- Email Row -->
     <LinearLayout
         android:layout_width="match_parent"
@@ -120,5 +157,7 @@
             android:textColor="#FFFFFF"
             android:textSize="13sp"/>
     </LinearLayout>
+
+
 
 </LinearLayout>

@@ -44,6 +44,7 @@
             android:layout_marginBottom="10dp"
             android:background="#FFFFFF"
             android:hint="Name &amp; Surname"
+            android:minHeight="48dp"
             android:padding="10dp"
             android:textColor="#000000" />
 
@@ -56,19 +57,23 @@
             android:background="#FFFFFF"
             android:hint="Age"
             android:inputType="number"
+            android:minHeight="48dp"
             android:padding="10dp"
             android:textColor="#000000" />
 
-        <!-- Gender (is a drop down box yall's got that) -->
-        <Spinner
-            android:id="@+id/spGender"
+        <!-- Phone Number -->
+        <EditText
+            android:id="@+id/etPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:background="#FFFFFF"
-            android:entries="@array/gender_options"
+            android:hint="Phone Number"
+            android:inputType="phone"
+            android:minHeight="48dp"
             android:padding="10dp"
-            android:spinnerMode="dropdown" />
+            android:textColor="#000000"
+            android:maxLength="10"/>
 
         <!-- Email -->
         <EditText
@@ -79,6 +84,7 @@
             android:background="#FFFFFF"
             android:hint="Email"
             android:inputType="textEmailAddress"
+            android:minHeight="48dp"
             android:padding="10dp"
             android:textColor="#000000" />
 
@@ -91,6 +97,7 @@
             android:background="#FFFFFF"
             android:hint="Password"
             android:inputType="textPassword"
+            android:minHeight="48dp"
             android:padding="10dp"
             android:textColor="#000000" />
 
@@ -103,25 +110,11 @@
             android:background="#FFFFFF"
             android:hint="Confirm Password"
             android:inputType="textPassword"
+            android:minHeight="48dp"
             android:padding="10dp"
             android:textColor="#000000" />
 
         <!-- Continue with Google -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnGoogle"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginBottom="10dp"
-            android:backgroundTint="#FFFFFF"
-            android:text="Continue with Google"
-            android:textColor="#000000"
-            android:textSize="14sp"
-            app:cornerRadius="10dp"
-            app:icon="@drawable/ic_google"
-            app:iconGravity="textStart"
-            app:iconPadding="8dp"
-            app:iconSize="24dp"
-            app:iconTint="@null" />
         <!-- Register Button -->
         <Button
             android:id="@+id/btnRegister"

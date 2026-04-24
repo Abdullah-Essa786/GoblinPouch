@@ -7,6 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.goblinpouchdemo.databinding.ActivityProfileBinding
 import com.example.goblinpouchdemo.models.User
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -19,16 +20,18 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var dbRef: DatabaseReference
 
     // Hardcoded for now — replace with FirebaseAuth.getInstance().currentUser?.uid later
-    private val currentUserId = "Abdullah"
+    private lateinit var currentUserId : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        currentUserId = intent.getStringExtra("USER_ID") ?: ""
+
         // Point to this user's profile node in Firebase
         dbRef = FirebaseDatabase.getInstance()
-            .getReference("temp/$currentUserId/Profile")
+            .getReference("Users/$currentUserId")
 
         loadProfile()
         loadExpenseStats()
@@ -53,6 +56,7 @@ class ProfileActivity : AppCompatActivity() {
                     // on its <include> tag in activity_profile.xml
                     val personalInfo = binding.layoutPersonalInfoCard
                     personalInfo.tvProfileName.text = user.username.ifEmpty { "Not set" }
+                    personalInfo.tvProfileAge.text = user.age.toString().ifEmpty { "Not Set" }
                     personalInfo.tvProfileEmail.text = user.email.ifEmpty { "Not set" }
                     personalInfo.tvProfilePhone.text = user.phone.ifEmpty { "Not set" }
 

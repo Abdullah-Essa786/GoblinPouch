@@ -21,21 +21,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GoblinPouchDemo">
         <activity android:name=".reports.CategoryTotalsActivity" />
+        <activity android:name=".RegisterActivity" android:exported="false" />
+<!--        <activity android:name=".ForgotPasswordActivity" android:exported="false" />-->
+        <activity android:name=".MainActivity" android:exported="false" />
+        <activity android:name=".ExpensesActivity" android:exported="false" />
+        <activity android:name=".CreateExpensesActivity" android:exported="false" />
+        <activity android:name=".HistoryActivity" android:exported="false" />
+        <activity android:name=".ProfileActivity" android:exported="false" />
+        <activity android:name=".TransactionHistoryActivity" android:exported="false" />
+        <activity android:name=".ReceiptCapture" android:exported="false" />
+        <activity android:name=".ViewReceipt" android:exported="false" />
+        <activity android:name=".LoadingActivity" android:exported="false" />
         <activity
-            android:name=".ViewReceipt"
-            android:exported="false" />
-        <activity
-            android:name=".ReceiptCapture"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

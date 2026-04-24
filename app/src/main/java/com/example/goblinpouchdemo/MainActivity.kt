@@ -13,6 +13,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var dbHelper: BudgetDbHelper
+    private lateinit var currentUserId: String
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,6 +22,8 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        currentUserId = intent.getStringExtra("USER_ID") ?: ""
 
         dbHelper = BudgetDbHelper(this)
 
@@ -31,6 +35,13 @@ class MainActivity : AppCompatActivity() {
         binding.btnInsertSampleData.setOnClickListener {
             insertSampleData()
         }
+
+        binding.btnProfile.setOnClickListener {
+            val intent = Intent(this, ProfileActivity::class.java)
+            intent.putExtra("USER_ID", currentUserId)
+            startActivity(intent)
+        }
+
     }
 
     private fun insertSampleData() {

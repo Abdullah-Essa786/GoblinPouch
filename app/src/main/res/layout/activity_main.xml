@@ -52,6 +52,14 @@
             android:text="INSERT SAMPLE DATA"
             android:textColor="#FFFFFF" />
 
+        <Button
+            android:id="@+id/btnProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#FF0000"
+            android:text="Profile"
+            android:textColor="#FFFFFF" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
