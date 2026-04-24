@@ -42,7 +42,6 @@
             android:id="@+id/tvProfileName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sechaba"
             android:textColor="#FFFFFF"
             android:textSize="13sp"/>
     </LinearLayout>
@@ -79,7 +78,6 @@
             android:id="@+id/tvProfileAge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="21"
             android:textColor="#FFFFFF"
             android:textSize="13sp"/>
     </LinearLayout>
@@ -116,7 +114,6 @@
             android:id="@+id/tvProfileEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="sechaba@email.com"
             android:textColor="#FFFFFF"
             android:textSize="13sp"/>
     </LinearLayout>
@@ -153,7 +150,6 @@
             android:id="@+id/tvProfilePhone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="+27 71 234 5678"
             android:textColor="#FFFFFF"
             android:textSize="13sp"/>
     </LinearLayout>

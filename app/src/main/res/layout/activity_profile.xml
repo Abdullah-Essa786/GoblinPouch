@@ -15,7 +15,7 @@
         <!-- Top Nav -->
         <include
             android:id="@+id/topNav"
-            layout="@layout/top_nav"
+            layout="@layout/layout_header_bar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"

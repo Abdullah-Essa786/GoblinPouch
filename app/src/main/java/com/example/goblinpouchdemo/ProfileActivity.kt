@@ -27,7 +27,18 @@ class ProfileActivity : AppCompatActivity() {
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        currentUserId = intent.getStringExtra("USER_ID") ?: ""
+        currentUserId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+        if (currentUserId.isEmpty()) {
+            Toast.makeText(this, "User ID not found", Toast.LENGTH_SHORT).show()
+            finish()
+            return
+        }
+
+        binding.topNav.tvPageTitle.text = "My Profile"
+
+        binding.topNav.btnMenu.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
 
         // Point to this user's profile node in Firebase
         dbRef = FirebaseDatabase.getInstance()
@@ -54,14 +65,14 @@ class ProfileActivity : AppCompatActivity() {
 
                     // Personal info card — needs android:id="@+id/layoutPersonalInfoCard"
                     // on its <include> tag in activity_profile.xml
-                    val personalInfo = binding.layoutPersonalInfoCard
+                    val personalInfo = com.example.goblinpouchdemo.databinding.ProfilePersonalInfoBinding.bind(binding.layoutPersonalInfoCard.root)
                     personalInfo.tvProfileName.text = user.username.ifEmpty { "Not set" }
-                    personalInfo.tvProfileAge.text = user.age.toString().ifEmpty { "Not Set" }
+                    personalInfo.tvProfileAge.text = if (user.age > 0) user.age.toString() else "Not Set"
                     personalInfo.tvProfileEmail.text = user.email.ifEmpty { "Not set" }
                     personalInfo.tvProfilePhone.text = user.phone.ifEmpty { "Not set" }
 
                     // Budget card — needs android:id="@+id/layoutBudgetCard"
-                    val budgetSettings = binding.layoutBudgetCard
+                    val budgetSettings = com.example.goblinpouchdemo.databinding.ProfileBudgetSettingsBinding.bind(binding.layoutBudgetCard.root)
                     budgetSettings.tvMonthlyBudget.text = "R %.2f".format(user.monthlyBudget)
                     budgetSettings.switchBudgetAlerts.isChecked = user.budgetAlertsEnabled
                 }
@@ -81,6 +92,7 @@ class ProfileActivity : AppCompatActivity() {
             email = "",
             phone = "",
             monthlyBudget = 0.0,
+            age = 0,
             budgetAlertsEnabled = true
         )
         dbRef.setValue(defaultUser)
@@ -90,7 +102,7 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun loadExpenseStats() {
         val expenseRef = FirebaseDatabase.getInstance()
-            .getReference("temp/$currentUserId/Expense")
+            .getReference("Users/$currentUserId")
 
         // Continuous listener — stats update automatically when expenses are added/removed
         expenseRef.addValueEventListener(object : ValueEventListener {
@@ -110,7 +122,7 @@ class ProfileActivity : AppCompatActivity() {
                 }
 
                 // Stats row — needs android:id="@+id/layoutStatsRow" on its <include> tag
-                val stats = binding.layoutStatsRow
+                val stats = com.example.goblinpouchdemo.databinding.ProfileStatsRowBinding.bind(binding.layoutStatsRow.root)
                 stats.tvStatTotalSpent.text = "R %.2f".format(totalSpent)
                 stats.tvStatTransactions.text = transactionCount.toString()
                 stats.tvStatCategories.text = categories.size.toString()
@@ -194,7 +206,9 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun setupSignOut() {
-        binding.layoutAccountCard.btnSignOut.setOnClickListener {
+        val accountCardBinding = com.example.goblinpouchdemo.databinding.ProfileAccountCardBinding.bind(binding.layoutAccountCard.root)
+
+        accountCardBinding.btnSignOut.setOnClickListener {
             AlertDialog.Builder(this)
                 .setTitle("Sign Out")
                 .setMessage("Are you sure you want to sign out?")
@@ -205,6 +219,7 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun signOut() {
+        FirebaseAuth.getInstance().signOut()
         // FLAG_ACTIVITY_CLEAR_TASK wipes the back stack so pressing back
         // on the login screen doesn't bring the user back into the app
         val intent = Intent(this, LoginActivity::class.java)
