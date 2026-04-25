@@ -36,7 +36,7 @@ class LoginActivity : AppCompatActivity(){
         setContentView(binding.root)
 
         if (currentUser != null) {
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, Dashboard::class.java)
             startActivity(intent)
             finish()
         }
@@ -98,7 +98,7 @@ class LoginActivity : AppCompatActivity(){
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
             // User is signed in, navigate to main screen
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, Dashboard::class.java)
             startActivity(intent)
             finish() // prevents going back to login screen
         } else {

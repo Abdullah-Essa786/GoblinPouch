@@ -1,13 +1,15 @@
 package com.example.goblinpouchdemo
 
 import com.example.goblinpouchdemo.models.Expense
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
 class CreateExpenses {
 
     private lateinit var dbRef: DatabaseReference
-    private val userId = "Abdullah"
+    private val auth = FirebaseAuth.getInstance()
+    private val userId = auth.currentUser ?: ""
 
     fun createExpense(
         name: String,
@@ -17,7 +19,7 @@ class CreateExpenses {
         categoryId: String
     ) {
         dbRef = FirebaseDatabase.getInstance()
-            .getReference("temp/$userId/expenses")
+            .getReference("Users/$userId/expenses")
 
         val id = dbRef.push().key ?: return
 

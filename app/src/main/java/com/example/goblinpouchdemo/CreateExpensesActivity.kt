@@ -6,31 +6,36 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.goblinpouchdemo.databinding.ActivityExpensesBinding
 import com.example.goblinpouchdemo.models.ExpenseCategory
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 
-class CreateExpensesActivity : AppCompatActivity() {
+class CreateExpensesActivity : NavSetup() {
 
-    private lateinit var binding: ActivityExpensesBinding
+    private lateinit var contentBinding: ActivityExpensesBinding
     private val expenseService = CreateExpenses()
-
-    private val userId = "Abdullah"
-
+    private lateinit var userId : String
     private var categoryList = mutableListOf<ExpenseCategory>()
+    private lateinit var auth : FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityExpensesBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        initRootBinding()
+        setupCommonNav()
+
+        val frame = navBinding.pageContent
+        val contentView = layoutInflater.inflate(R.layout.activity_expenses, frame, false)
+        frame.addView(contentView)
+        contentBinding = ActivityExpensesBinding.bind(contentView)
 
         loadCategories()
 
-        binding.btnAddExpense.setOnClickListener {
+        contentBinding.btnAddExpense.setOnClickListener {
 
-            val name = binding.etExpenseName.text.toString().trim()
-            val description = binding.etExpenseDescription.text.toString().trim()
-            val amountText = binding.etExpenseAmount.text.toString().trim()
-            val date = binding.etExpenseDate.text.toString().trim()
+            val name = contentBinding.etExpenseName.text.toString().trim()
+            val description = contentBinding.etExpenseDescription.text.toString().trim()
+            val amountText = contentBinding.etExpenseAmount.text.toString().trim()
+            val date = contentBinding.etExpenseDate.text.toString().trim()
 
             val amount = amountText.toDoubleOrNull()
 
@@ -44,7 +49,7 @@ class CreateExpensesActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val selectedCategory = categoryList[binding.spinnerCategoryName.selectedItemPosition]
+            val selectedCategory = categoryList[contentBinding.spinnerCategoryName.selectedItemPosition]
 
             expenseService.createExpense(
                 name = name,
@@ -61,9 +66,11 @@ class CreateExpensesActivity : AppCompatActivity() {
     }
 
     private fun loadCategories() {
+        auth = FirebaseAuth.getInstance()
+        userId = auth.currentUser?.uid ?: ""
 
         val dbRef = FirebaseDatabase.getInstance()
-            .getReference("temp/$userId/categories")
+            .getReference("Users/$userId/categories")
 
         dbRef.get().addOnSuccessListener { snapshot ->
 
@@ -86,14 +93,14 @@ class CreateExpensesActivity : AppCompatActivity() {
                 android.R.layout.simple_spinner_dropdown_item
             )
 
-            binding.spinnerCategoryName.adapter = adapter
+            contentBinding.spinnerCategoryName.adapter = adapter
         }
     }
 
     private fun clearFields() {
-        binding.etExpenseName.text.clear()
-        binding.etExpenseDescription.text.clear()
-        binding.etExpenseAmount.text.clear()
-        binding.etExpenseDate.text.clear()
+        contentBinding.etExpenseName.text.clear()
+        contentBinding.etExpenseDescription.text.clear()
+        contentBinding.etExpenseAmount.text.clear()
+        contentBinding.etExpenseDate.text.clear()
     }
 }

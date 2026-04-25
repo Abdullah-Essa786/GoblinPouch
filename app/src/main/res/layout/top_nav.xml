@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <!-- MAIN CONTENT — unchanged -->
     <LinearLayout
@@ -12,13 +13,16 @@
         android:orientation="vertical"
         android:background="@drawable/bg_gradient">
 
-
+        <include layout="@layout/layout_header_bar" android:id="@+id/header"/>
 
         <FrameLayout
             android:id="@+id/pageContent"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
 
+        <!-- Bottom nav bar -->
+        <include layout="@layout/bottom_nav" android:id="@+id/bottomNav"/>
     </LinearLayout>
 
     <!-- REPLACE the old LinearLayout drawer with this -->

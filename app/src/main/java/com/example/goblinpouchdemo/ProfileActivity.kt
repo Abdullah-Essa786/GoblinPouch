@@ -14,30 +14,29 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class ProfileActivity : AppCompatActivity() {
+class ProfileActivity : NavSetup() {
 
-    private lateinit var binding: ActivityProfileBinding
+    private lateinit var contentBinding: ActivityProfileBinding
     private lateinit var dbRef: DatabaseReference
-
-    // Hardcoded for now — replace with FirebaseAuth.getInstance().currentUser?.uid later
     private lateinit var currentUserId : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityProfileBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        initRootBinding()
+        setupCommonNav()
+
+        navBinding.header.tvPageTitle.text = "My Profile"
+
+        val frame = navBinding.pageContent
+        val contentView = layoutInflater.inflate(R.layout.activity_profile, frame, false)
+        frame.addView(contentView)
+        contentBinding = ActivityProfileBinding.bind(contentView)
 
         currentUserId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
         if (currentUserId.isEmpty()) {
             Toast.makeText(this, "User ID not found", Toast.LENGTH_SHORT).show()
             finish()
             return
-        }
-
-        binding.topNav.tvPageTitle.text = "My Profile"
-
-        binding.topNav.btnMenu.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
         }
 
         // Point to this user's profile node in Firebase
@@ -60,19 +59,19 @@ class ProfileActivity : AppCompatActivity() {
                 if (user != null) {
                     // ⚠️ These two lines will crash if activity_profile.xml doesn't have
                     // tvUserName and tvUserEmail in a header section — remove if not present
-                    binding.tvUserName.text = user.username.ifEmpty { "Not set" }
-                    binding.tvUserEmail.text = user.email.ifEmpty { "Not set" }
+                    contentBinding.tvUserName.text = user.username.ifEmpty { "Not set" }
+                    contentBinding.tvUserEmail.text = user.email.ifEmpty { "Not set" }
 
                     // Personal info card — needs android:id="@+id/layoutPersonalInfoCard"
                     // on its <include> tag in activity_profile.xml
-                    val personalInfo = com.example.goblinpouchdemo.databinding.ProfilePersonalInfoBinding.bind(binding.layoutPersonalInfoCard.root)
+                    val personalInfo = com.example.goblinpouchdemo.databinding.ProfilePersonalInfoBinding.bind(contentBinding.layoutPersonalInfoCard.root)
                     personalInfo.tvProfileName.text = user.username.ifEmpty { "Not set" }
                     personalInfo.tvProfileAge.text = if (user.age > 0) user.age.toString() else "Not Set"
                     personalInfo.tvProfileEmail.text = user.email.ifEmpty { "Not set" }
                     personalInfo.tvProfilePhone.text = user.phone.ifEmpty { "Not set" }
 
                     // Budget card — needs android:id="@+id/layoutBudgetCard"
-                    val budgetSettings = com.example.goblinpouchdemo.databinding.ProfileBudgetSettingsBinding.bind(binding.layoutBudgetCard.root)
+                    val budgetSettings = com.example.goblinpouchdemo.databinding.ProfileBudgetSettingsBinding.bind(contentBinding.layoutBudgetCard.root)
                     budgetSettings.tvMonthlyBudget.text = "R %.2f".format(user.monthlyBudget)
                     budgetSettings.switchBudgetAlerts.isChecked = user.budgetAlertsEnabled
                 }
@@ -122,7 +121,7 @@ class ProfileActivity : AppCompatActivity() {
                 }
 
                 // Stats row — needs android:id="@+id/layoutStatsRow" on its <include> tag
-                val stats = com.example.goblinpouchdemo.databinding.ProfileStatsRowBinding.bind(binding.layoutStatsRow.root)
+                val stats = com.example.goblinpouchdemo.databinding.ProfileStatsRowBinding.bind(contentBinding.layoutStatsRow.root)
                 stats.tvStatTotalSpent.text = "R %.2f".format(totalSpent)
                 stats.tvStatTransactions.text = transactionCount.toString()
                 stats.tvStatCategories.text = categories.size.toString()
@@ -149,7 +148,7 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun setupBudgetRow() {
         // Tapping the budget row opens a dialog to enter a new amount
-        binding.layoutBudgetCard.btnSetMonthlyBudget.setOnClickListener {
+        contentBinding.layoutBudgetCard.btnSetMonthlyBudget.setOnClickListener {
             val input = android.widget.EditText(this).apply {
                 inputType = android.text.InputType.TYPE_CLASS_NUMBER or
                         android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL
@@ -177,7 +176,7 @@ class ProfileActivity : AppCompatActivity() {
         dbRef.child("monthlyBudget").setValue(amount)
             .addOnSuccessListener {
                 // Update the UI immediately so user doesn't have to reload
-                binding.layoutBudgetCard.tvMonthlyBudget.text = "R %.2f".format(amount)
+                contentBinding.layoutBudgetCard.tvMonthlyBudget.text = "R %.2f".format(amount)
                 Toast.makeText(this, "Budget updated", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener {
@@ -186,27 +185,27 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun setupBudgetAlertsSwitch() {
-        binding.layoutBudgetCard.switchBudgetAlerts.setOnCheckedChangeListener { _, isChecked ->
+        contentBinding.layoutBudgetCard.switchBudgetAlerts.setOnCheckedChangeListener { _, isChecked ->
             // Only updates the one field in Firebase rather than rewriting the whole User object
             dbRef.child("budgetAlertsEnabled").setValue(isChecked)
                 .addOnFailureListener {
                     Toast.makeText(this, "Failed to save preference", Toast.LENGTH_SHORT).show()
                     // Revert the switch visually if the save failed
-                    binding.layoutBudgetCard.switchBudgetAlerts.isChecked = !isChecked
+                    contentBinding.layoutBudgetCard.switchBudgetAlerts.isChecked = !isChecked
                 }
         }
     }
 
     private fun setupChangePassword() {
         // Account card — needs android:id="@+id/layoutAccountCard" on its <include> tag
-        binding.layoutAccountCard.btnChangePassword.setOnClickListener {
+        contentBinding.layoutAccountCard.btnChangePassword.setOnClickListener {
             // Placeholder — wire up to Firebase Auth password reset later
             Toast.makeText(this, "Change password coming soon", Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun setupSignOut() {
-        val accountCardBinding = com.example.goblinpouchdemo.databinding.ProfileAccountCardBinding.bind(binding.layoutAccountCard.root)
+        val accountCardBinding = com.example.goblinpouchdemo.databinding.ProfileAccountCardBinding.bind(contentBinding.layoutAccountCard.root)
 
         accountCardBinding.btnSignOut.setOnClickListener {
             AlertDialog.Builder(this)

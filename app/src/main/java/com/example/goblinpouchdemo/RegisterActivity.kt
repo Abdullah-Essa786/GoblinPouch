@@ -68,12 +68,12 @@ class RegisterActivity : AppCompatActivity(){
                     )
 
                     dbRef = Firebase.database.getReference("Users")
-                    dbRef.child(userId).setValue(user)
+                    dbRef.child(userId).child("profile").setValue(user)
                         .addOnSuccessListener {
                             Toast.makeText(this, "User registered successfully", Toast.LENGTH_SHORT).show()
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success")
-                            val intent = Intent(this, MainActivity::class.java)
+                            val intent = Intent(this, Dashboard::class.java)
                             intent.putExtra("USER_ID", userId)
                             startActivity(intent)
                             finish()
