@@ -50,20 +50,18 @@
                         android:id="@+id/tvBudgetAmount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="R1,270 / R2,000"
+                        android:letterSpacing="-0.02"
                         android:textColor="#FFFFFF"
                         android:textSize="22sp"
-                        android:textStyle="bold"
-                        android:letterSpacing="-0.02"/>
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tvBudgetPercent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="63% Used"
+                        android:layout_marginTop="2dp"
                         android:textColor="#AFCBFF"
-                        android:textSize="12sp"
-                        android:layout_marginTop="2dp"/>
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
@@ -89,10 +87,9 @@
                             android:id="@+id/tvDonutPercent"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="63%"
                             android:textColor="#FFFFFF"
                             android:textSize="16sp"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -113,10 +110,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="7dp"
                 android:layout_marginTop="12dp"
-                android:progress="63"
-                android:progressTint="#4FC3F7"
+                android:max="100"
                 android:progressBackgroundTint="#1AFFFFFF"
-                android:max="100"/>
+                android:progressTint="#4FC3F7" />
 
         </LinearLayout>
 
