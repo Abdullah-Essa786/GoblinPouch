@@ -25,6 +25,9 @@
         <activity android:name=".reports.CategoryTotalsActivity" />
         <activity
             android:name=".RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CategoriesActivity"
             android:exported="false" /> <!-- <activity android:name=".ForgotPasswordActivity" android:exported="false" /> -->
         <activity
             android:name=".MainActivity"
@@ -52,6 +55,8 @@
             android:exported="false" />
         <activity
             android:name=".LoadingActivity"
+            android:exported="false" /><activity
+            android:name=".CreateExpenseCategoryActivity"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"

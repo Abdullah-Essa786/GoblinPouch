@@ -116,82 +116,6 @@
 
         </LinearLayout>
 
-        <!-- CARD: Category Budgets -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:background="@drawable/bg_card"
-            android:layout_marginBottom="12dp">
-
-            <!-- Card label -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Category Budgets"
-                android:textColor="#AFCBFF"
-                android:textSize="12sp"
-                android:textAllCaps="true"
-                android:letterSpacing="0.08"
-                android:layout_marginBottom="10dp"/>
-
-            <!-- Groceries row: icon | name | amount -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="8dp">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_grocery"
-                    android:layout_marginEnd="8dp"
-                    android:contentDescription="Groceries"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Groceries"
-                    android:textColor="#FFFFFF"
-                    android:textSize="14sp"
-                    android:textStyle="bold"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="R1,320 / R1,500"
-                    android:textColor="#AFCBFF"
-                    android:textSize="13sp"/>
-
-            </LinearLayout>
-
-            <!-- Category progress bar -->
-            <ProgressBar
-                android:id="@+id/progressGroceries"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="7dp"
-                android:progress="63"
-                android:progressTint="#4FC3F7"
-                android:progressBackgroundTint="#1AFFFFFF"
-                android:max="100"/>
-
-            <!-- Right-aligned percentage label -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="63% Used"
-                android:textColor="#AFCBFF"
-                android:textSize="11sp"
-                android:gravity="end"
-                android:layout_marginTop="4dp"/>
-
-        </LinearLayout>
-
         <!-- CARD: Budget Alerts -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -304,6 +228,82 @@
 
                 </LinearLayout>
             </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- CARD: Category Budgets -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:background="@drawable/bg_card"
+            android:layout_marginBottom="12dp">
+
+            <!-- Card label -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Category Budgets"
+                android:textColor="#AFCBFF"
+                android:textSize="12sp"
+                android:textAllCaps="true"
+                android:letterSpacing="0.08"
+                android:layout_marginBottom="10dp"/>
+
+            <!-- Groceries row: icon | name | amount -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="8dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_grocery"
+                    android:layout_marginEnd="8dp"
+                    android:contentDescription="Groceries"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Groceries"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="R1,320 / R1,500"
+                    android:textColor="#AFCBFF"
+                    android:textSize="13sp"/>
+
+            </LinearLayout>
+
+            <!-- Category progress bar -->
+            <ProgressBar
+                android:id="@+id/progressGroceries"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="7dp"
+                android:progress="63"
+                android:progressTint="#4FC3F7"
+                android:progressBackgroundTint="#1AFFFFFF"
+                android:max="100"/>
+
+            <!-- Right-aligned percentage label -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="63% Used"
+                android:textColor="#AFCBFF"
+                android:textSize="11sp"
+                android:gravity="end"
+                android:layout_marginTop="4dp"/>
 
         </LinearLayout>
 

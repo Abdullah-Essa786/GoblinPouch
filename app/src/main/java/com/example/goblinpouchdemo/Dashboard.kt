@@ -53,27 +53,38 @@ class Dashboard : NavSetup() {
         dbRef.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
 
-                var monthlyBudget =
+                val monthlyBudget =
                     snapshot.child("profile").child("monthlyBudget").getValue(Double::class.java)
                         ?: 0.0
+
+                val categorySpending = mutableMapOf<String, Double>()
+                val categoryBudget = mutableMapOf<String, Double>()
+
+                for (cat in snapshot.child("categories").children){
+                    val name = cat.child("name").getValue(String::class.java) ?: ""
+                    val limit = cat.child("budgetSet").getValue(Double::class.java) ?: 0.0
+                    categoryBudget[name] = limit
+                }
 
                 val currentMonth = java.text.SimpleDateFormat(
                     "yyyy-MM",
                     java.util.Locale.getDefault()
                 ).format(java.util.Date())
 
-                var totalSpent = 0.0
-                var expenseSnapshot = snapshot.child("expenses")
+                var totalMonthlySpent = 0.0
+                val expenseSnapshot = snapshot.child("expenses")
 
                 for (expense in expenseSnapshot.children) {
                     val amount = expense.child("amount").getValue(Double::class.java) ?: 0.0
                     val date = expense.child("date").getValue(String::class.java) ?: ""
+                    val category = expense.child("category").getValue(String::class.java) ?: ""
 
                     if (date.startsWith(currentMonth)) {
-                        totalSpent += amount
+                        totalMonthlySpent += amount
+                        categorySpending[category] = categorySpending.getOrDefault(category, 0.0) + amount
                     }
                 }
-                updateUi(totalSpent, monthlyBudget)
+                updateBudgetUi(totalMonthlySpent, monthlyBudget)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -82,7 +93,7 @@ class Dashboard : NavSetup() {
         })
     }
 
-    private fun updateUi(totalSpent: Double, monthlyBudget: Double){
+    private fun updateBudgetUi(totalSpent: Double, monthlyBudget: Double){
         val percentage = if (monthlyBudget > 0) {
             ((totalSpent / monthlyBudget) * 100).toInt()
         } else {
@@ -101,6 +112,10 @@ class Dashboard : NavSetup() {
         else{
             contentBinding.tvBudgetAmount.setTextColor(getColor(R.color.white))
         }
+    }
+
+    private fun updateCategoryBudgetUi(){
+
     }
 
 }

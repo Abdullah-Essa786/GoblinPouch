@@ -5,7 +5,9 @@
 package com.example.goblinpouchdemo.models
 
 data class Category (
+    var id : String = "",
     var name: String = "",
-    var description: String = "",
     var totalSpent: Double = 0.0,
+    var budgetSet: Double = 0.0,
+    var icon : String = ""
 )

@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.goblinpouchdemo.databinding.ActivityHistoryBinding
+import com.example.goblinpouchdemo.models.Category
+import com.example.goblinpouchdemo.models.CategorySummary
 import com.example.goblinpouchdemo.models.Expense
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -182,14 +184,13 @@ class HistoryActivity : AppCompatActivity() {
                 // then we calculate a total and count for each group
                 val categoryGroups = filtered
                     .groupBy { it.category }
-                    .map { (category, expenses) ->
-                        CategorySummary(
-                            name = category,
-                            total = expenses.sumOf { it.amount },
-                            count = expenses.size
+                    .map { (categoryName, expenses) ->
+                        Category(
+                            name = categoryName,
+                            totalSpent = expenses.sumOf { it.amount }
                         )
                     }
-                    .sortedByDescending { it.total }  // highest spending category first
+                    .sortedByDescending { it.totalSpent }  // highest spending category first
 
                 categoryAdapter.submitList(categoryGroups)
 

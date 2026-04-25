@@ -8,72 +8,86 @@ import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.goblinpouchdemo.CategoryAdapter
+import com.example.goblinpouchdemo.NavSetup
 import com.example.goblinpouchdemo.R
 import com.example.goblinpouchdemo.database.BudgetDbHelper
+import com.example.goblinpouchdemo.databinding.ActivityCategoryTotalsBinding
+import com.example.goblinpouchdemo.databinding.TopNavBinding
+import com.example.goblinpouchdemo.models.Category
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import java.text.NumberFormat
 import java.util.Locale
 
-class CategoryTotalsActivity : AppCompatActivity() {
+class CategoryTotalsActivity : NavSetup() {
 
-    private lateinit var dbHelper: BudgetDbHelper
-    private lateinit var etStartDate: EditText
-    private lateinit var etEndDate: EditText
-    private lateinit var btnLoadTotals: Button
-    private lateinit var tvGrandTotal: TextView
-    private lateinit var listViewTotals: ListView
+    private lateinit var binding: ActivityCategoryTotalsBinding
+    private lateinit var adapter: CategoryAdapter
+    private val categories = mutableListOf<Category>()
+
+    private val auth = FirebaseAuth.getInstance()
+    private val currentUserId = auth.currentUser?.uid ?: ""
+    private val dbRef = FirebaseDatabase.getInstance().getReference("Users/$currentUserId/categories")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_category_totals)
 
-        dbHelper = BudgetDbHelper(this)
+        initRootBinding()
+        setupCommonNav()
 
-        etStartDate = findViewById(R.id.etStartDate)
-        etEndDate = findViewById(R.id.etEndDate)
-        btnLoadTotals = findViewById(R.id.btnLoadTotals)
-        tvGrandTotal = findViewById(R.id.tvGrandTotal)
-        listViewTotals = findViewById(R.id.listViewTotals)
+        val frame = navBinding.pageContent
+        val contentView = layoutInflater.inflate(R.layout.activity_category_totals, frame, false)
+        frame.addView(contentView)
+        binding = ActivityCategoryTotalsBinding.bind(contentView)
 
-        btnLoadTotals.setOnClickListener {
-            loadCategoryTotals()
-        }
+        navBinding.header.tvPageTitle.text = "Category Totals"
+
+
     }
 
     private fun loadCategoryTotals() {
-        val startDate = etStartDate.text.toString().trim()
-        val endDate = etEndDate.text.toString().trim()
+        val startDate = binding.etStartDate.text.toString().trim()
+        val endDate = binding.etEndDate.text.toString().trim()
 
         if (startDate.isEmpty() || endDate.isEmpty()) {
             Toast.makeText(this, "Please enter both dates", Toast.LENGTH_SHORT).show()
             return
         }
 
-        val totals = dbHelper.getCategoryTotals(startDate, endDate)
+        dbRef.get().addOnSuccessListener { snapshot ->
+            if (!snapshot.exists()) {
+                binding.tvGrandTotal.text = "Grand Total: R0.00"
+                binding.listViewTotals.adapter = null
+                Toast.makeText(this, "No Categories found", Toast.LENGTH_SHORT).show()
+                return@addOnSuccessListener
+            }
 
-        if (totals.isEmpty()) {
-            tvGrandTotal.text = "Grand Total: R0.00"
-            listViewTotals.adapter = null
-            Toast.makeText(this, "No expenses found for this period", Toast.LENGTH_SHORT).show()
-            return
+
+            val currencyFormat = NumberFormat.getCurrencyInstance(Locale("en", "ZA"))
+            val displayList = mutableListOf<String>()
+            var grandTotal = 0.0
+
+            for (child in snapshot.children) {
+                val category = child.getValue(Category::class.java)
+                if (category != null) {
+                    displayList.add("${category.name} - ${currencyFormat.format(category.totalSpent)}")
+                    grandTotal += category.totalSpent
+                }
+            }
+
+            // Update UI with calculated totals
+            binding.tvGrandTotal.text = "Grand Total: " + currencyFormat.format(grandTotal)
+
+            val adapter = ArrayAdapter(
+                this,
+                android.R.layout.simple_list_item_1,
+                displayList
+            )
+            binding.listViewTotals.adapter = adapter
+
+        }.addOnFailureListener {
+            Toast.makeText(this, "Failed to fetch data from cloud", Toast.LENGTH_SHORT).show()
         }
-
-        val currencyFormat = NumberFormat.getCurrencyInstance(Locale("en", "ZA"))
-        val displayList = mutableListOf<String>()
-        var grandTotal = 0.0
-
-        for (item in totals) {
-            displayList.add(item.category + " - " + currencyFormat.format(item.totalAmount))
-            grandTotal += item.totalAmount
-        }
-
-        tvGrandTotal.text = "Grand Total: " + currencyFormat.format(grandTotal)
-
-        val adapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_list_item_1,
-            displayList
-        )
-
-        listViewTotals.adapter = adapter
     }
 }

@@ -3,9 +3,11 @@ package com.example.goblinpouchdemo
 import android.content.Intent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.goblinpouchdemo.databinding.TopNavBinding
+import com.example.goblinpouchdemo.reports.CategoryTotalsActivity
 
 abstract class NavSetup : AppCompatActivity() {
 
@@ -27,10 +29,6 @@ abstract class NavSetup : AppCompatActivity() {
             insets
         }
 
-        navBinding.header.btnMenu.setOnClickListener {
-            navBinding.drawerLayout.open()
-        }
-
     }
 
     protected fun setupCommonNav(){
@@ -44,6 +42,29 @@ abstract class NavSetup : AppCompatActivity() {
             if (this !is ProfileActivity) {
                 startActivity(Intent(this, ProfileActivity::class.java))
             }
+        }
+
+        navBinding.header.btnMenu.setOnClickListener {
+            navBinding.drawerLayout.open()
+        }
+
+        navBinding.navView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.navDashboard -> {
+                    startActivity(Intent(this, Dashboard::class.java))
+                }
+                R.id.navCategories -> {
+                    startActivity(Intent(this, CategoriesActivity::class.java))
+                }
+                R.id.navHistory -> {
+                    startActivity(Intent(this, CategoryTotalsActivity::class.java))
+                }
+                R.id.navProfile -> {
+                    startActivity(Intent(this, ProfileActivity::class.java))
+                }
+            }
+            navBinding.drawerLayout.closeDrawer(GravityCompat.START)
+            true
         }
 
     }

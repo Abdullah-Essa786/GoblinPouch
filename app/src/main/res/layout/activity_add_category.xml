@@ -3,11 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/bg_gradient">
-
-    <!-- Top nav -->
-    <include layout="@layout/top_nav"/>
+    android:orientation="vertical">
 
     <!-- Scroll area -->
     <ScrollView
@@ -177,6 +173,18 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <EditText
+                android:id="@+id/etBudgetAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/input_fields_bg"
+                android:hint="Budgeted Amount for Category"
+                android:textColorHint="#AAAAAA"
+                android:inputType="numberDecimal"
+                android:padding="12dp"
+                android:textColor="#FFFFFF" />
+
             <!-- Add Button -->
             <Button
                 android:id="@+id/btnAddCategory"
@@ -189,7 +197,4 @@
                 android:background="@drawable/bg_btn"/>
         </LinearLayout>
     </ScrollView>
-
-    <!-- Bottom nav -->
-    <include layout="@layout/bottom_nav"/>
 </LinearLayout>

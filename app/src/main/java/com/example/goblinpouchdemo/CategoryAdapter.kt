@@ -5,35 +5,47 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.goblinpouchdemo.databinding.ItemCategoryRowBinding
+import com.example.goblinpouchdemo.models.Category
 
 // CategorySummary holds the data for one row in the category breakdown list
-data class CategorySummary(
-    val name: String,    // e.g. "Food"
-    val total: Double,   // total amount spent in this category
-    val count: Int       // number of transactions in this category
-)
 
 // same Adapter pattern as ExpenseAdapter but for category summary rows
 class CategoryAdapter(
-    private val categories: MutableList<CategorySummary>
+    private val categories: MutableList<Category>
 ) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
     inner class CategoryViewHolder(val binding: ItemCategoryRowBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: CategorySummary) {
+        fun bind(item: Category) {
             binding.tvCategoryName.text = item.name
-            binding.tvAmountSpent.text = "R %.2f".format(item.total)
+            binding.tvAmountSpent.text = "R %.2f".format(item.totalSpent)
 
-            // show "1 transaction" or "3 transactions" depending on count
-            binding.tvProgressLabel.text =
-                "${item.count} transaction${if (item.count != 1) "s" else ""}"
+            if (item.budgetSet > 0){
+                binding.progressCategory.visibility = View.VISIBLE
+                binding.tvBudgetLimit.visibility = View.VISIBLE
+                binding.tvProgressLabel.visibility = View.VISIBLE
 
-            // these views exist in the layout for other screens
-            // but aren't needed here so we hide them
-            binding.tvBudgetLimit.visibility = View.GONE
+                val percentage = ((item.totalSpent / item.budgetSet) * 100).toInt()
+                binding.progressCategory.progress = percentage
+                binding.tvBudgetLimit.text = "R %.2f".format(item.budgetSet)
+                binding.tvProgressLabel.text = "$percentage%"
+
+                if (item.totalSpent > item.budgetSet){
+                    binding.tvAmountSpent.setTextColor(binding.root.context.getColor(R.color.red))
+                }
+                else{
+                    binding.tvAmountSpent.setTextColor(binding.root.context.getColor(R.color.white))
+                }
+
+            }
+            else{
+                binding.progressCategory.visibility = View.GONE
+                binding.tvBudgetLimit.visibility = View.GONE
+                binding.tvProgressLabel.text = "No budget set"
+            }
             binding.tvDateRange.visibility = View.GONE
-            binding.progressCategory.visibility = View.GONE
+
         }
     }
 
@@ -51,7 +63,7 @@ class CategoryAdapter(
     override fun getItemCount() = categories.size
 
     // clear the old list, add the new one, and tell RecyclerView to redraw
-    fun submitList(newList: List<CategorySummary>) {
+    fun submitList(newList: List<Category>) {
         categories.clear()
         categories.addAll(newList)
         notifyDataSetChanged()
