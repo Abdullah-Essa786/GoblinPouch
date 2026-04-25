@@ -41,7 +41,7 @@ class ProfileActivity : NavSetup() {
 
         // Point to this user's profile node in Firebase
         dbRef = FirebaseDatabase.getInstance()
-            .getReference("Users/$currentUserId")
+            .getReference("Users/$currentUserId/profile")
 
         loadProfile()
         loadExpenseStats()
