@@ -69,6 +69,9 @@ abstract class NavSetup : AppCompatActivity() {
                 R.id.navProfile -> {
                     startActivity(Intent(this, ProfileActivity::class.java))
                 }
+                R.id.navAdd ->{
+                    startActivity(Intent(this, CreateExpensesActivity::class.java))
+                }
             }
             navBinding.drawerLayout.closeDrawer(GravityCompat.START)
             true
