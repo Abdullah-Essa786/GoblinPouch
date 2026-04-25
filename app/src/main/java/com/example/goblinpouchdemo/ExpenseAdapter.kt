@@ -22,7 +22,6 @@ class ExpenseAdapter(
 
         // bind = fill this card's views with data from one Expense object
         fun bind(expense: Expense) {
-            binding.tvExpenseName.text = expense.name
             binding.tvExpenseAmount.text = "R %.2f".format(expense.amount)
             binding.tvExpenseNotes.text = expense.description
             binding.tvExpenseDate.text = expense.date

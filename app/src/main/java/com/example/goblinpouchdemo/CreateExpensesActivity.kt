@@ -1,20 +1,21 @@
 package com.example.goblinpouchdemo
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import com.example.goblinpouchdemo.databinding.ActivityExpensesBinding
-import com.example.goblinpouchdemo.models.ExpenseCategory
+import com.example.goblinpouchdemo.databinding.ActivityAddExpenseBinding
+import com.example.goblinpouchdemo.models.Category
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import java.util.Calendar
 
 class CreateExpensesActivity : NavSetup() {
 
-    private lateinit var contentBinding: ActivityExpensesBinding
+    private lateinit var contentBinding: ActivityAddExpenseBinding
     private val expenseService = CreateExpenses()
     private lateinit var userId : String
-    private var categoryList = mutableListOf<ExpenseCategory>()
+    private var categoryList = mutableListOf<Category>()
     private lateinit var auth : FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,44 +25,48 @@ class CreateExpensesActivity : NavSetup() {
         setupCommonNav()
 
         val frame = navBinding.pageContent
-        val contentView = layoutInflater.inflate(R.layout.activity_expenses, frame, false)
+        val contentView = layoutInflater.inflate(R.layout.activity_add_expense, frame, false)
         frame.addView(contentView)
-        contentBinding = ActivityExpensesBinding.bind(contentView)
+        contentBinding = ActivityAddExpenseBinding.bind(contentView)
+
+        navBinding.header.tvPageTitle.text = "Create Expense"
 
         loadCategories()
+        setUpDatePicker()
 
-        contentBinding.btnAddExpense.setOnClickListener {
+        contentBinding.btnSaveExpense.setOnClickListener {
 
-            val name = contentBinding.etExpenseName.text.toString().trim()
-            val description = contentBinding.etExpenseDescription.text.toString().trim()
+            val description = contentBinding.etNotes.text.toString().trim()
             val amountText = contentBinding.etExpenseAmount.text.toString().trim()
-            val date = contentBinding.etExpenseDate.text.toString().trim()
+            val date = contentBinding.tvExpenseDate.text.toString().trim()
 
             val amount = amountText.toDoubleOrNull()
 
-            if (name.isEmpty() ||
-                description.isEmpty() ||
+            if (description.isEmpty() ||
                 amount == null ||
-                date.isEmpty() ||
+                date == "Select Date" ||
                 categoryList.isEmpty()
             ) {
                 Toast.makeText(this, "Fill all fields correctly", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            val selectedCategory = categoryList[contentBinding.spinnerCategoryName.selectedItemPosition]
+            val selectedCategory = categoryList[contentBinding.spCategory.selectedItemPosition]
 
             expenseService.createExpense(
-                name = name,
                 description = description,
                 amount = amount,
                 date = date,
-                categoryId = selectedCategory.id   // FIXED
-            )
-
-            Toast.makeText(this, "Expense created", Toast.LENGTH_SHORT).show()
-
-            clearFields()
+                categoryId = selectedCategory.id
+            ){success ->
+                if (success){
+                    Toast.makeText(this, "Expense created", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+                else{
+                    Toast.makeText(this, "Failed to create expense", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
@@ -77,12 +82,11 @@ class CreateExpensesActivity : NavSetup() {
             categoryList.clear()
 
             for (child in snapshot.children) {
-                val category = child.getValue(ExpenseCategory::class.java)
+                val category = child.getValue(Category::class.java)
                 category?.let { categoryList.add(it) }
             }
 
             val names = categoryList.map { it.name }
-
             val adapter = ArrayAdapter(
                 this,
                 android.R.layout.simple_spinner_item,
@@ -93,14 +97,18 @@ class CreateExpensesActivity : NavSetup() {
                 android.R.layout.simple_spinner_dropdown_item
             )
 
-            contentBinding.spinnerCategoryName.adapter = adapter
+            contentBinding.spCategory.adapter = adapter
         }
     }
 
-    private fun clearFields() {
-        contentBinding.etExpenseName.text.clear()
-        contentBinding.etExpenseDescription.text.clear()
-        contentBinding.etExpenseAmount.text.clear()
-        contentBinding.etExpenseDate.text.clear()
+    private fun setUpDatePicker(){
+        contentBinding.tvExpenseDate.setOnClickListener {
+            val c = Calendar.getInstance()
+            DatePickerDialog(this, { _, year, month, day ->
+                val dateString = "$year-${month + 1}-$day"
+                contentBinding.tvExpenseDate.text = dateString
+            }, c.get(Calendar.YEAR), c.get(Calendar.MONTH),
+                c.get(Calendar.DAY_OF_MONTH)).show()
+        }
     }
 }

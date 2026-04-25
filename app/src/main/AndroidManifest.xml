@@ -33,9 +33,6 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".ExpensesActivity"
-            android:exported="false" />
-        <activity
             android:name=".CreateExpensesActivity"
             android:exported="false" />
         <activity

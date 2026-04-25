@@ -1,5 +1,6 @@
 package com.example.goblinpouchdemo
 
+import android.widget.Toast
 import com.example.goblinpouchdemo.models.Expense
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -9,15 +10,17 @@ class CreateExpenses {
 
     private lateinit var dbRef: DatabaseReference
     private val auth = FirebaseAuth.getInstance()
-    private val userId = auth.currentUser ?: ""
+    private val userId = auth.currentUser?.uid ?: ""
 
     fun createExpense(
-        name: String,
         description: String,
         amount: Double,
         date: String,
-        categoryId: String
+        categoryId: String,
+        onComplete: (Boolean) -> Unit
     ) {
+        if (userId.isEmpty()) return onComplete(false)
+
         dbRef = FirebaseDatabase.getInstance()
             .getReference("Users/$userId/expenses")
 
@@ -25,7 +28,6 @@ class CreateExpenses {
 
         val expense = Expense(
             id = id,
-            name = name,
             description = description,
             amount = amount,
             date = date,
@@ -35,10 +37,10 @@ class CreateExpenses {
 
         dbRef.child(id).setValue(expense)
             .addOnSuccessListener {
-                println("Expense successfully created")
+                onComplete(true)
             }
             .addOnFailureListener {
-                println("Failed to create expense")
+                onComplete(false)
             }
 
     }

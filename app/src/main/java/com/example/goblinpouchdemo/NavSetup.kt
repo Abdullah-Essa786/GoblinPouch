@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.goblinpouchdemo.databinding.ActivityAddExpenseBinding
 import com.example.goblinpouchdemo.databinding.TopNavBinding
 import com.example.goblinpouchdemo.reports.CategoryTotalsActivity
 
@@ -35,6 +36,12 @@ abstract class NavSetup : AppCompatActivity() {
         navBinding.bottomNav.root.findViewById<View>(R.id.navHome).setOnClickListener {
             if (this !is Dashboard) {
                 startActivity(Intent(this, Dashboard::class.java))
+            }
+        }
+
+        navBinding.bottomNav.root.findViewById<View>(R.id.navAdd).setOnClickListener {
+            if (this !is CreateExpensesActivity) {
+                startActivity(Intent(this, CreateExpensesActivity::class.java))
             }
         }
 
