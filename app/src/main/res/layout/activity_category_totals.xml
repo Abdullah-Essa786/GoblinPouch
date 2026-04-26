@@ -44,10 +44,12 @@
             android:autofillHints="none"
             android:background="#FFFFFF"
             android:hint="@string/start_date_hint"
-            android:inputType="text"
+            android:inputType="none"
             android:padding="12dp"
             android:textColor="#000000"
-            android:textColorHint="#666666" />
+            android:textColorHint="#666666"
+            android:focusable="false"
+            android:clickable="true"/>
 
         <EditText
             android:id="@+id/etEndDate"
@@ -58,10 +60,12 @@
             android:autofillHints="none"
             android:background="#FFFFFF"
             android:hint="@string/end_date_hint"
-            android:inputType="text"
+            android:inputType="none"
             android:padding="12dp"
             android:textColor="#000000"
-            android:textColorHint="#666666" />
+            android:textColorHint="#666666"
+            android:focusable="false"
+            android:clickable="true"/>
 
         <Button
             android:id="@+id/btnLoadTotals"

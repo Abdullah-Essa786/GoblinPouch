@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.goblinpouchdemo.databinding.ActivityCategoriesBinding
 import com.example.goblinpouchdemo.models.Category
 import com.example.goblinpouchdemo.models.Expense
+import com.example.goblinpouchdemo.reports.CategoryTotalsActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -35,6 +36,10 @@ class CategoriesActivity: NavSetup() {
 
         setupRecyclerView()
         listenForData()
+
+        binding.btnFilter.setOnClickListener {
+            startActivity(Intent(this, CategoryTotalsActivity::class.java))
+        }
 
         binding.btnAddCategory.setOnClickListener {
             startActivity(Intent(this, CreateExpenseCategoryActivity::class.java))
