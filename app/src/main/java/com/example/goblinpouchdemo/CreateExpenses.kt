@@ -13,6 +13,7 @@ class CreateExpenses {
     private val userId = auth.currentUser?.uid ?: ""
 
     fun createExpense(
+        id: String,
         description: String,
         amount: Double,
         date: String,
@@ -24,24 +25,31 @@ class CreateExpenses {
         dbRef = FirebaseDatabase.getInstance()
             .getReference("Users/$userId/expenses")
 
-        val id = dbRef.push().key ?: return
 
-        val expense = Expense(
-            id = id,
-            description = description,
-            amount = amount,
-            date = date,
-            category = categoryId,
-            attachment = ""   // keeping the attachment empty for now
-        )
+        val expenseRef = FirebaseDatabase.getInstance()
+            .getReference("Users/${userId}/expenses/${id}")
 
-        dbRef.child(id).setValue(expense)
-            .addOnSuccessListener {
-                onComplete(true)
-            }
-            .addOnFailureListener {
-                onComplete(false)
-            }
+        expenseRef.child("attachment").get().addOnSuccessListener { snapshot ->
+            // If snapshot exists, use it; otherwise, default to empty string
+            val existingAttachment = snapshot.getValue(String::class.java) ?: ""
+
+            val expense = Expense(
+                id = id,
+                description = description,
+                amount = amount,
+                date = date,
+                category = categoryId,
+                attachment = existingAttachment // 2. Preserve the image!
+            )
+
+            // 3. Now save the full object
+            expenseRef.setValue(expense)
+                .addOnSuccessListener { onComplete(true) }
+                .addOnFailureListener { onComplete(false) }
+
+        }.addOnFailureListener {
+            onComplete(false)
+        }
 
     }
 }

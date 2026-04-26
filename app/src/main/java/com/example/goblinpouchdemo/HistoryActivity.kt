@@ -11,6 +11,7 @@ import com.example.goblinpouchdemo.databinding.ActivityHistoryBinding
 import com.example.goblinpouchdemo.models.Category
 import com.example.goblinpouchdemo.models.CategorySummary
 import com.example.goblinpouchdemo.models.Expense
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -21,26 +22,31 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class HistoryActivity : AppCompatActivity() {
+class HistoryActivity : NavSetup() {
 
     private lateinit var binding: ActivityHistoryBinding
-    private lateinit var categoryAdapter: CategoryAdapter
-    private val currentUserId = "Abdullah"
+    private lateinit var adapter: ExpenseAdapter
+    private lateinit var auth: FirebaseAuth
+    private lateinit var dbRef: DatabaseReference
+    private lateinit var currentUserId : String
 
-    private val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
-    private val dbDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    private val dbDateFormat = SimpleDateFormat("yyy-M-d", Locale.getDefault())
 
     private var startDate: Date? = null
     private var endDate: Date? = null
 
-    // store the active listener and database reference so we can remove the listener later
-    private var expenseListener: ValueEventListener? = null
-    private var activeDbRef: DatabaseReference? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityHistoryBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+
+        initRootBinding()
+        setupCommonNav()
+
+        val frame = navBinding.pageContent
+        val contentView = layoutInflater.inflate(R.layout.activity_history, frame, false)
+        frame.addView(contentView)
+        binding = ActivityHistoryBinding.bind(contentView)
+        navBinding.header.tvPageTitle.text = "Transaction History"
 
         setupRecyclerView()
         setupTabs()
@@ -52,9 +58,9 @@ class HistoryActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        categoryAdapter = CategoryAdapter(mutableListOf())
-        binding.rvHistoryCategories.layoutManager = LinearLayoutManager(this)
-        binding.rvHistoryCategories.adapter = categoryAdapter
+        adapter = ExpenseAdapter(mutableListOf())
+        binding.rvHistoryTransactions.layoutManager = LinearLayoutManager(this)
+        binding.rvHistoryTransactions.adapter = adapter
     }
 
     private fun setupTabs() {
@@ -63,7 +69,7 @@ class HistoryActivity : AppCompatActivity() {
         tabs.forEach { tab ->
             tab.setOnClickListener {
                 // reset all tabs back to unselected style first
-                tabs.forEach {
+                tabs.forEach { it ->
                     it.setTextColor(ContextCompat.getColor(this, android.R.color.darker_gray))
                     it.background = null
                 }
@@ -101,17 +107,16 @@ class HistoryActivity : AppCompatActivity() {
     private fun setupDateSelection() {
         // tapping the date area opens a custom range picker
         // first picker = start date, second picker = end date
-        binding.layoutDateSelection.setOnClickListener {
-            showDatePicker { date ->
-                startDate = date
-
-                // once start is picked, immediately open the end date picker
-                showDatePicker { end ->
-                    endDate = end
-                    updateDateRangeDisplay()
-                    loadFilteredHistory()
-                }
-            }
+        binding.tvDateRange.setOnClickListener {
+            val cal = Calendar.getInstance()
+            DatePickerDialog(this, { _, year, month, day ->
+                cal.set(year, month, day)
+                startDate = cal.time
+                endDate = Calendar.getInstance().time
+                updateDateRangeDisplay()
+                loadFilteredHistory()
+            }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),
+                cal.get(Calendar.DAY_OF_MONTH)).show()
         }
     }
 
@@ -146,75 +151,46 @@ class HistoryActivity : AppCompatActivity() {
         val start = startDate ?: return
         val end = endDate ?: return
 
-        // remove the previous listener before attaching a new one
-        // without this, every tab tap or date change stacks up another listener
-        expenseListener?.let { activeDbRef?.removeEventListener(it) }
+        auth = FirebaseAuth.getInstance()
+        currentUserId = auth.currentUser?.uid ?: ""
+        dbRef = FirebaseDatabase.getInstance().getReference("Users/$currentUserId/expenses")
 
-        val dbRef = FirebaseDatabase.getInstance()
-            .getReference("temp/$currentUserId/Expense")
-
-        // save the reference so we can remove the listener later
-        activeDbRef = dbRef
-
-        // create the listener and save it to our property
-        expenseListener = object : ValueEventListener {
+        dbRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val filtered = mutableListOf<Expense>()
+                val filteredList = mutableListOf<Expense>()
+                var totalSpent = 0.0
 
-                // loop through every expense and keep only ones in the selected range
                 for (child in snapshot.children) {
                     val expense = child.getValue(Expense::class.java) ?: continue
+                    expense.id = child.key ?: ""
 
-                    // parse the stored date string into a Date so we can compare it
                     val expenseDate = try {
                         dbDateFormat.parse(expense.date)
                     } catch (e: Exception) {
-                        null  // skip this expense if the date string can't be parsed
+                        null
                     }
-
-                    // before(start) = too old, after(end) = too new — we want everything in between
-                    if (expenseDate != null &&
-                        !expenseDate.before(start) &&
-                        !expenseDate.after(end)) {
-                        filtered.add(expense)
+                    if (expenseDate != null && !expenseDate.before(start) && !expenseDate.after(end)) {
+                        filteredList.add(expense)
+                        totalSpent += expense.amount
                     }
                 }
 
-                // groupBy bundles all expenses with the same category together
-                // then we calculate a total and count for each group
-                val categoryGroups = filtered
-                    .groupBy { it.category }
-                    .map { (categoryName, expenses) ->
-                        Category(
-                            name = categoryName,
-                            totalSpent = expenses.sumOf { it.amount }
-                        )
-                    }
-                    .sortedByDescending { it.totalSpent }  // highest spending category first
+                filteredList.sortedByDescending { it.date }
+                adapter.submitList(filteredList)
 
-                categoryAdapter.submitList(categoryGroups)
+                binding.layoutSummaryCard.tvTotalSpending.text = "R %.2f".format(totalSpent)
+                binding.layoutSummaryCard.tvTransactionCount.text = filteredList.size.toString()
 
-                // only show the graph area if there's actually data to display
-                binding.graphContainer.visibility =
-                    if (filtered.isEmpty()) View.GONE else View.VISIBLE
+                val topCat = filteredList.groupBy { it.category }
+                    .maxByOrNull { entry -> entry.value.sumOf { it.amount } }?.key ?: "None"
+
+                binding.layoutSummaryCard.tvMostExpensiveCategory.text = topCat
+
             }
-
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(
-                    this@HistoryActivity,
-                    "Error: ${error.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(this@HistoryActivity, "Database Error: ${error.message}", Toast.LENGTH_SHORT).show()
             }
-        }
 
-        // attach the saved listener — now exactly one listener is active at a time
-        dbRef.addValueEventListener(expenseListener!!)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        // remove the listener when the screen closes so nothing runs in the background
-        expenseListener?.let { activeDbRef?.removeEventListener(it) }
+        })
     }
 }

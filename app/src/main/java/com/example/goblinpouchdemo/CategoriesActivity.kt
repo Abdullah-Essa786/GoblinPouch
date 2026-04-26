@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.goblinpouchdemo.databinding.ActivityCategoriesBinding
 import com.example.goblinpouchdemo.models.Category
+import com.example.goblinpouchdemo.models.Expense
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -17,7 +18,6 @@ class CategoriesActivity: NavSetup() {
     private lateinit var binding: ActivityCategoriesBinding
     private lateinit var adapter: CategoryAdapter
     private val categories = mutableListOf<Category>()
-
     private val auth = FirebaseAuth.getInstance()
     private val currentUserId = auth.currentUser?.uid ?: ""
     private val dbRef = FirebaseDatabase.getInstance().getReference("Users/$currentUserId/categories")
@@ -29,9 +29,7 @@ class CategoriesActivity: NavSetup() {
         setupCommonNav()
 
         val frame = navBinding.pageContent
-        val contentView = layoutInflater.inflate(R.layout.activity_categories, frame, false)
-        frame.addView(contentView)
-        binding = ActivityCategoriesBinding.bind(contentView)
+        binding = ActivityCategoriesBinding.inflate(layoutInflater, frame, true)
 
         navBinding.header.tvPageTitle.text = "Categories"
 
@@ -49,33 +47,47 @@ class CategoriesActivity: NavSetup() {
     }
 
     private fun setupRecyclerView() {
-        adapter = CategoryAdapter(categories)
+        adapter = CategoryAdapter()
         binding.rvCategories.layoutManager = LinearLayoutManager(this)
         binding.rvCategories.adapter = adapter
+        binding.rvCategories.isNestedScrollingEnabled = true
     }
 
     private fun listenForData(){
-        dbRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                categories.clear()
 
+        val uid = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+        val rootRef = FirebaseDatabase.getInstance().reference
+
+        rootRef.child("Users/${uid}").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val categoriesSnapshot = dataSnapshot.child("categories")
+                val expensesSnapshot = dataSnapshot.child("expenses")
+
+                val newList = mutableListOf<Category>()
                 var totalMonthSpent = 0.0
                 var totalMonthBudget = 0.0
 
-                for (child in dataSnapshot.children) {
+                for (child in categoriesSnapshot.children) {
                     val category = child.getValue(Category::class.java)
                     if (category != null) {
-                        categories.add(category)
-                        totalMonthSpent += category.totalSpent
-                        totalMonthBudget += category.budgetSet
+                        val actualSpent = expensesSnapshot.children.mapNotNull {
+                            it.getValue(Expense::class.java)
+                        }.filter { it.category == category.name }
+                            .sumOf { it.amount }
+
+                        val updatedCategory = category.copy(totalSpent = actualSpent)
+                        newList.add(updatedCategory)
+                        totalMonthSpent += actualSpent
+                        totalMonthBudget += updatedCategory.budgetSet
                     }
                 }
 
-                adapter.submitList(categories)
-                updateGrandTotalUI(totalMonthSpent, totalMonthBudget)
+                runOnUiThread {
+                    adapter.submitList(newList)
+                    updateGrandTotalUI(totalMonthSpent, totalMonthBudget)
+                }
 
             }
-
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(this@CategoriesActivity, "Failed to load categories", Toast.LENGTH_SHORT).show()
             }

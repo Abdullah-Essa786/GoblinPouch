@@ -50,7 +50,7 @@
     <!-- Notes -->
     <EditText
         android:id="@+id/etNotes"
-        android:hint="Notes (optional)"
+        android:hint="Notes"
         android:inputType="textMultiLine"
         android:lines="2"
         android:gravity="top"

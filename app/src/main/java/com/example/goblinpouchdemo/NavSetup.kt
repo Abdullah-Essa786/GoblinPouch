@@ -64,7 +64,7 @@ abstract class NavSetup : AppCompatActivity() {
                     startActivity(Intent(this, CategoriesActivity::class.java))
                 }
                 R.id.navHistory -> {
-                    startActivity(Intent(this, CategoryTotalsActivity::class.java))
+                    startActivity(Intent(this, HistoryActivity::class.java))
                 }
                 R.id.navProfile -> {
                     startActivity(Intent(this, ProfileActivity::class.java))

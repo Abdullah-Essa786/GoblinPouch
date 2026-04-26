@@ -1,6 +1,9 @@
 package com.example.goblinpouchdemo
 
+import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.util.Base64
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -32,9 +35,8 @@ class ExpenseAdapter(
                 try {
                     // the image is stored as a Base64 string in Firebase
                     // decode it back into bytes, then into a Bitmap we can display
-                    val bytes = Base64.decode(expense.attachment, Base64.DEFAULT)
-                    val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-                    binding.ivReceiptImage.setImageBitmap(bitmap)
+                    val rotatedBitmap = decodeAndRotate(expense.attachment)
+                    binding.ivReceiptImage.setImageBitmap(rotatedBitmap)
                 } catch (e: Exception) {
                     // if decoding fails for any reason, show the placeholder image
                     binding.ivReceiptImage.setImageResource(R.drawable.ic_no_image_placeholder)
@@ -42,6 +44,28 @@ class ExpenseAdapter(
             } else {
                 // no receipt — show the placeholder image
                 binding.ivReceiptImage.setImageResource(R.drawable.ic_no_image_placeholder)
+            }
+
+            binding.ivReceiptImage.setOnClickListener {
+                val context = it.context
+
+                if (expense.attachment == "None" || expense.attachment.isEmpty()) {
+                    val intent = Intent(context, ReceiptCapture::class.java)
+                    intent.putExtra("EXPENSE_ID", expense.id)
+                    context.startActivity(intent)
+                } else {
+                    val intent = Intent(context, ViewReceipt::class.java)
+                    intent.putExtra("EXPENSE_ID", expense.id)
+                    context.startActivity(intent)
+                }
+            }
+
+            binding.ivReceiptImage.setOnLongClickListener {
+                val context = it.context
+                val intent = Intent(context, ReceiptCapture::class.java)
+                intent.putExtra("EXPENSE_ID", expense.id)
+                context.startActivity(intent)
+                true
             }
 
             // when the card is tapped, fire the click handler if one is set
@@ -72,4 +96,16 @@ class ExpenseAdapter(
         expenses.addAll(newList)
         notifyDataSetChanged() // tells RecyclerView to redraw all cards
     }
+
+    private fun decodeAndRotate(base64String: String): Bitmap {
+        val decodedBytes = Base64.decode(base64String, Base64.DEFAULT)
+        val bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+
+        // Rotate 90 degrees for portrait camera shots
+        val matrix = Matrix()
+        matrix.postRotate(90f)
+
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+    }
+
 }

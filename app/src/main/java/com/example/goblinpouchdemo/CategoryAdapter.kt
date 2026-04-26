@@ -10,9 +10,9 @@ import com.example.goblinpouchdemo.models.Category
 // CategorySummary holds the data for one row in the category breakdown list
 
 // same Adapter pattern as ExpenseAdapter but for category summary rows
-class CategoryAdapter(
-    private val categories: MutableList<Category>
-) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
+class CategoryAdapter() : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
+
+    private val categories = mutableListOf<Category>()
 
     inner class CategoryViewHolder(val binding: ItemCategoryRowBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -20,6 +20,17 @@ class CategoryAdapter(
         fun bind(item: Category) {
             binding.tvCategoryName.text = item.name
             binding.tvAmountSpent.text = "R %.2f".format(item.totalSpent)
+
+            if (item.icon.isNotEmpty()){
+                val context = binding.root.context
+                val iconId = context.resources.getIdentifier(item.icon, "drawable", context.packageName)
+                if (iconId != 0){
+                    binding.ivCategoryIcon.setImageResource(iconId)
+                }
+                else{
+                    binding.ivCategoryIcon.setImageResource(R.drawable.ic_category_placeholder)
+                }
+            }
 
             if (item.budgetSet > 0){
                 binding.progressCategory.visibility = View.VISIBLE
@@ -50,6 +61,7 @@ class CategoryAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
+        println("DEBUG: Creating a new row view")
         val binding = ItemCategoryRowBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
@@ -64,8 +76,8 @@ class CategoryAdapter(
 
     // clear the old list, add the new one, and tell RecyclerView to redraw
     fun submitList(newList: List<Category>) {
-        categories.clear()
-        categories.addAll(newList)
+        this.categories.clear()
+        this.categories.addAll(newList)
         notifyDataSetChanged()
     }
 }

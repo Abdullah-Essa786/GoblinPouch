@@ -5,9 +5,8 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:background="@drawable/bg_card"
-    android:padding="12dp">
+    android:padding="16dp">
 
-    <!-- Receipt Image -->
     <ImageView
         android:id="@+id/ivReceiptImage"
         android:layout_width="56dp"
@@ -19,13 +18,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Expense Name -->
     <TextView
-        android:id="@+id/tvExpenseName"
+        android:id="@+id/tvCategoryBadge"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="#FFFFFF"
-        android:textSize="15sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         android:maxLines="1"
         android:ellipsize="end"
@@ -34,57 +32,37 @@
         app:layout_constraintEnd_toStartOf="@id/ivReceiptImage"
         android:layout_marginEnd="8dp"/>
 
-
-    <!-- Amount -->
     <TextView
         android:id="@+id/tvExpenseAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#00E676"
-        android:textSize="15sp"
+        android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/tvExpenseName"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="4dp"/>
+        app:layout_constraintTop_toTopOf="@id/tvCategoryBadge"
+        app:layout_constraintEnd_toStartOf="@id/ivReceiptImage"
+        android:layout_marginEnd="12dp"/>
 
-    <!-- Notes -->
     <TextView
         android:id="@+id/tvExpenseNotes"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="#7A8FA6"
-        android:textSize="12sp"
-        android:maxLines="1"
-        android:ellipsize="end"
-        app:layout_constraintTop_toBottomOf="@id/tvExpenseName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/tvExpenseAmount"
+        android:textSize="13sp"
         android:layout_marginTop="4dp"
-        android:layout_marginEnd="8dp"/>
+        app:layout_constraintTop_toBottomOf="@id/tvCategoryBadge"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tvExpenseAmount"/>
 
-    <!-- Date -->
     <TextView
         android:id="@+id/tvExpenseDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#5F7285"
         android:textSize="11sp"
+        android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@id/tvExpenseNotes"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginTop="6dp"/>
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <!-- Category Badge -->
-    <TextView
-        android:id="@+id/tvCategoryBadge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#A8CFFF"
-        android:textSize="11sp"
-        android:paddingHorizontal="8dp"
-        android:paddingVertical="2dp"
-        android:background="@drawable/bg_category_chip"
-        android:drawablePadding="4dp"
-        app:layout_constraintStart_toEndOf="@id/tvExpenseDate"
-        app:layout_constraintBottom_toBottomOf="@id/tvExpenseDate"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

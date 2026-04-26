@@ -16,9 +16,9 @@
             android:id="@+id/navAdd"
             android:title="@string/add_expense"/>
 
-        <item
-            android:id="@+id/navRecurring"
-            android:title="@string/subscriptions_rent"/>
+<!--        <item-->
+<!--            android:id="@+id/navRecurring"-->
+<!--            android:title="@string/subscriptions_rent"/>-->
 
         <item
             android:id="@+id/navHistory"
