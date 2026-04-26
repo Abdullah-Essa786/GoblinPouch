@@ -3,9 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
+
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
@@ -17,6 +19,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GoblinPouchDemo">
+        <activity
+            android:name=".EditBudget"
+            android:exported="false" />
         <activity
             android:name=".Dashboard"
             android:exported="false" />
@@ -50,7 +55,8 @@
             android:exported="false" />
         <activity
             android:name=".LoadingActivity"
-            android:exported="false" /><activity
+            android:exported="false" />
+        <activity
             android:name=".CreateExpenseCategoryActivity"
             android:exported="false" />
         <activity

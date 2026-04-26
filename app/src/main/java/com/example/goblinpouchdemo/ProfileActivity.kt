@@ -53,35 +53,31 @@ class ProfileActivity : NavSetup() {
     private fun loadProfile() {
         // Single read — profile doesn't need a live listener since it
         // only changes when the user explicitly edits it
-        dbRef.get().addOnSuccessListener { snapshot ->
-            if (snapshot.exists()) {
-                val user = snapshot.getValue(User::class.java)
-                if (user != null) {
-                    // ⚠️ These two lines will crash if activity_profile.xml doesn't have
-                    // tvUserName and tvUserEmail in a header section — remove if not present
-                    contentBinding.tvUserName.text = user.username.ifEmpty { "Not set" }
-                    contentBinding.tvUserEmail.text = user.email.ifEmpty { "Not set" }
+        dbRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    val user = snapshot.getValue(User::class.java)
+                    if (user != null) {
+                        contentBinding.tvUserName.text = user.username.ifEmpty { "Not set" }
+                        contentBinding.tvUserEmail.text = user.email.ifEmpty { "Not set" }
 
-                    // Personal info card — needs android:id="@+id/layoutPersonalInfoCard"
-                    // on its <include> tag in activity_profile.xml
-                    val personalInfo = com.example.goblinpouchdemo.databinding.ProfilePersonalInfoBinding.bind(contentBinding.layoutPersonalInfoCard.root)
-                    personalInfo.tvProfileName.text = user.username.ifEmpty { "Not set" }
-                    personalInfo.tvProfileAge.text = if (user.age > 0) user.age.toString() else "Not Set"
-                    personalInfo.tvProfileEmail.text = user.email.ifEmpty { "Not set" }
-                    personalInfo.tvProfilePhone.text = user.phone.ifEmpty { "Not set" }
+                        val personalInfo = com.example.goblinpouchdemo.databinding.ProfilePersonalInfoBinding.bind(contentBinding.layoutPersonalInfoCard.root)
+                        personalInfo.tvProfileName.text = user.username.ifEmpty { "Not set" }
+                        personalInfo.tvProfileAge.text = if (user.age > 0) user.age.toString() else "Not Set"
+                        personalInfo.tvProfileEmail.text = user.email.ifEmpty { "Not set" }
+                        personalInfo.tvProfilePhone.text = user.phone.ifEmpty { "Not set" }
 
-                    // Budget card — needs android:id="@+id/layoutBudgetCard"
-                    val budgetSettings = com.example.goblinpouchdemo.databinding.ProfileBudgetSettingsBinding.bind(contentBinding.layoutBudgetCard.root)
-                    budgetSettings.tvMonthlyBudget.text = "R %.2f".format(user.monthlyBudget)
-                    budgetSettings.switchBudgetAlerts.isChecked = user.budgetAlertsEnabled
+                        val budgetSettings = com.example.goblinpouchdemo.databinding.ProfileBudgetSettingsBinding.bind(contentBinding.layoutBudgetCard.root)
+                        budgetSettings.tvMonthlyBudget.text = "R %,.2f".format(user.monthlyBudget)
+                        budgetSettings.switchBudgetAlerts.isChecked = user.budgetAlertsEnabled
+                    }
+                } else {
+                    createDefaultProfile()
                 }
-            } else {
-                // First time this user opens the profile — write defaults to Firebase
-                createDefaultProfile()
             }
-        }.addOnFailureListener {
-            Toast.makeText(this, "Failed to load profile", Toast.LENGTH_SHORT).show()
-        }
+
+            override fun onCancelled(error: DatabaseError) {}
+        })
     }
 
     private fun createDefaultProfile() {
@@ -100,39 +96,44 @@ class ProfileActivity : NavSetup() {
     // ─── Stats ────────────────────────────────────────────────────────────────
 
     private fun loadExpenseStats() {
-        val expenseRef = FirebaseDatabase.getInstance()
+        // Point to the root of the user so we can see both expenses and categories nodes
+        val userRootRef = FirebaseDatabase.getInstance()
             .getReference("Users/$currentUserId")
 
-        // Continuous listener — stats update automatically when expenses are added/removed
-        expenseRef.addValueEventListener(object : ValueEventListener {
+        userRootRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 var totalSpent = 0.0
-                val categories = mutableSetOf<String>() // Set auto-deduplicates categories
                 var transactionCount = 0
 
-                // Loop through every expense and accumulate totals
-                for (child in snapshot.children) {
-                    val amount = child.child("amount").getValue(Double::class.java) ?: 0.0
-                    val category = child.child("category").getValue(String::class.java) ?: ""
+                // 1. Get the actual count of created categories
+                val categoryCount = snapshot.child("categories").childrenCount.toInt()
 
-                    totalSpent += amount
+                val currentMonth = java.text.SimpleDateFormat("yyyy-M", java.util.Locale.getDefault())
+                    .format(java.util.Date())
+
+                // 2. Loop through expenses for spending totals
+                val expensesSnapshot = snapshot.child("expenses")
+                for (child in expensesSnapshot.children) {
+                    val amount = child.child("amount").getValue(Double::class.java) ?: 0.0
+                    val date = child.child("date").getValue(String::class.java) ?: ""
+
+                    if (date.startsWith(currentMonth)) {
+                        totalSpent += amount
+                    }
                     transactionCount++
-                    if (category.isNotEmpty()) categories.add(category)
                 }
 
-                // Stats row — needs android:id="@+id/layoutStatsRow" on its <include> tag
+                // Update UI
                 val stats = com.example.goblinpouchdemo.databinding.ProfileStatsRowBinding.bind(contentBinding.layoutStatsRow.root)
-                stats.tvStatTotalSpent.text = "R %.2f".format(totalSpent)
+                stats.tvStatTotalSpent.text = "R %.0f".format(totalSpent)
                 stats.tvStatTransactions.text = transactionCount.toString()
-                stats.tvStatCategories.text = categories.size.toString()
+
+                // Now this shows how many categories EXIST, even if they have 0 expenses
+                stats.tvStatCategories.text = categoryCount.toString()
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(
-                    this@ProfileActivity,
-                    "Failed to load stats: ${error.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(this@ProfileActivity, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -147,41 +148,10 @@ class ProfileActivity : NavSetup() {
     }
 
     private fun setupBudgetRow() {
-        // Tapping the budget row opens a dialog to enter a new amount
         contentBinding.layoutBudgetCard.btnSetMonthlyBudget.setOnClickListener {
-            val input = android.widget.EditText(this).apply {
-                inputType = android.text.InputType.TYPE_CLASS_NUMBER or
-                        android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL
-                hint = "Enter amount in Rands"
-            }
-
-            AlertDialog.Builder(this)
-                .setTitle("Set Monthly Budget")
-                .setView(input)
-                .setPositiveButton("Save") { _, _ ->
-                    val newBudget = input.text.toString().toDoubleOrNull()
-                    if (newBudget != null && newBudget >= 0) {
-                        saveBudget(newBudget)
-                    } else {
-                        Toast.makeText(this, "Enter a valid amount", Toast.LENGTH_SHORT).show()
-                    }
-                }
-                .setNegativeButton("Cancel", null)
-                .show()
+            val intent = Intent(this, EditBudget::class.java)
+            startActivity(intent)
         }
-    }
-
-    private fun saveBudget(amount: Double) {
-        // Only updates the monthlyBudget field — doesn't overwrite the whole profile object
-        dbRef.child("monthlyBudget").setValue(amount)
-            .addOnSuccessListener {
-                // Update the UI immediately so user doesn't have to reload
-                contentBinding.layoutBudgetCard.tvMonthlyBudget.text = "R %.2f".format(amount)
-                Toast.makeText(this, "Budget updated", Toast.LENGTH_SHORT).show()
-            }
-            .addOnFailureListener {
-                Toast.makeText(this, "Failed to update budget", Toast.LENGTH_SHORT).show()
-            }
     }
 
     private fun setupBudgetAlertsSwitch() {
