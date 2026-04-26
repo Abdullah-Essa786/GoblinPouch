@@ -3,6 +3,10 @@ package com.example.goblinpouchdemo
 import com.example.goblinpouchdemo.NavSetup
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -67,7 +71,7 @@ class Dashboard : NavSetup() {
                 }
 
                 val currentMonth = java.text.SimpleDateFormat(
-                    "yyyy-MM",
+                    "yyyy-M",
                     java.util.Locale.getDefault()
                 ).format(java.util.Date())
 
@@ -85,6 +89,7 @@ class Dashboard : NavSetup() {
                     }
                 }
                 updateBudgetUi(totalMonthlySpent, monthlyBudget)
+                updateCategoryLists(categorySpending, categoryBudget, snapshot)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -94,10 +99,10 @@ class Dashboard : NavSetup() {
     }
 
     private fun updateBudgetUi(totalSpent: Double, monthlyBudget: Double){
-        val percentage = if (monthlyBudget > 0) {
-            ((totalSpent / monthlyBudget) * 100).toInt()
-        } else {
-            0
+        val percentage = when {
+            monthlyBudget > 0 -> ((totalSpent / monthlyBudget) * 100).toInt()
+            totalSpent > 0 -> 100
+            else -> 0
         }
 
         contentBinding.tvBudgetAmount.text = "R%,.0f / R%,.0f".format(totalSpent, monthlyBudget)
@@ -106,7 +111,7 @@ class Dashboard : NavSetup() {
 
         contentBinding.progressMonthly.progress = percentage
 
-        if (totalSpent > monthlyBudget && monthlyBudget > 0){
+        if (totalSpent > 0 && (monthlyBudget == 0.0 || totalSpent > monthlyBudget)){
             contentBinding.tvBudgetAmount.setTextColor(getColor(R.color.red))
         }
         else{
@@ -114,7 +119,50 @@ class Dashboard : NavSetup() {
         }
     }
 
-    private fun updateCategoryBudgetUi(){
+    private fun updateCategoryLists(spending: Map<String, Double>, budget: Map<String, Double>, snapshot: DataSnapshot){
+        contentBinding.containerAlerts.removeAllViews()
+        contentBinding.containerCategoryBudgets.removeAllViews()
+
+        var hasAlerts = false
+
+        for (catSnapshot in snapshot.child("categories").children) {
+            val name = catSnapshot.child("name").getValue(String::class.java) ?: ""
+            val limit = catSnapshot.child("budgetSet").getValue(Double::class.java) ?: 0.0
+            val iconName = catSnapshot.child("icon").getValue(String::class.java) ?: "ic_default"
+
+            val spent = spending.getOrDefault(name, 0.0)
+            val percentage = if (limit > 0) ((spent / limit) * 100).toInt() else 0
+
+            // Get the actual Resource ID from the string name
+            val resId = resources.getIdentifier(iconName, "drawable", packageName)
+
+            // --- 1. Add to Category List ---
+            val catView = layoutInflater.inflate(R.layout.item_dashboard_category, contentBinding.containerCategoryBudgets, false)
+            catView.findViewById<TextView>(R.id.tvCategoryName).text = name
+            catView.findViewById<TextView>(R.id.tvCategoryAmount).text = "R%.0f / R%.0f".format(spent, limit)
+            catView.findViewById<TextView>(R.id.tvCategoryPercent).text = "$percentage% Used"
+            catView.findViewById<ProgressBar>(R.id.progressCategory).progress = if (percentage > 100) 100 else percentage
+
+            // Set the dynamic icon
+            if (resId != 0) catView.findViewById<ImageView>(R.id.ivCategoryIcon).setImageResource(resId)
+
+            contentBinding.containerCategoryBudgets.addView(catView)
+
+            // --- 2. Add to Alerts (If over budget) ---
+            if (spent > limit && limit > 0) {
+                hasAlerts = true
+                val alertView = layoutInflater.inflate(R.layout.item_dashboard_alert, contentBinding.containerAlerts, false)
+                alertView.findViewById<TextView>(R.id.tvAlertName).text = name
+                alertView.findViewById<TextView>(R.id.tvAlertStatus).text = "R%.0f / R%.0f".format(spent, limit)
+                alertView.findViewById<ProgressBar>(R.id.progressAlert).progress = 100
+
+                if (resId != 0) alertView.findViewById<ImageView>(R.id.ivAlertIcon).setImageResource(resId)
+
+                contentBinding.containerAlerts.addView(alertView)
+            }
+        }
+
+        contentBinding.cardAlerts.visibility = if (hasAlerts) View.VISIBLE else View.GONE
 
     }
 
