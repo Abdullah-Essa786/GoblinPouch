@@ -14,6 +14,10 @@ abstract class NavSetup : AppCompatActivity() {
 
     protected lateinit var navBinding: TopNavBinding
 
+    fun setLoadingState(isLoading: Boolean) {
+        navBinding.loadingState.loadingOverlay.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
     protected fun initRootBinding(){
         navBinding = TopNavBinding.inflate(layoutInflater)
         setContentView(navBinding.root)

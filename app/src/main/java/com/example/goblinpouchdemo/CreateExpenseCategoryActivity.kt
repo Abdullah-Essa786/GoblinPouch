@@ -29,20 +29,24 @@ class CreateExpenseCategoryActivity : NavSetup() {
 
         contentBinding.btnAddCategory.setOnClickListener {
 
+            setLoadingState(true)
             val name = contentBinding.spinnerCategoryName.selectedItem?.toString() ?: ""
             val budget = contentBinding.etBudgetAmount.text.toString().toDoubleOrNull()
 
             if (name.isEmpty() || budget == null) {
+                setLoadingState(false)
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             categoryService.createCategory(name, budget, selectedIconName){ success ->
                 if (success){
+                    setLoadingState(false)
                     Toast.makeText(this, "Category created successfully", Toast.LENGTH_SHORT).show()
                     finish()
                 }
                 else{
+                    setLoadingState(false)
                     Toast.makeText(this, "Failed to create category", Toast.LENGTH_SHORT).show()
                 }
             }

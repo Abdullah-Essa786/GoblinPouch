@@ -43,6 +43,7 @@ class ProfileActivity : NavSetup() {
         dbRef = FirebaseDatabase.getInstance()
             .getReference("Users/$currentUserId/profile")
 
+        setLoadingState(isLoading = true)
         loadProfile()
         loadExpenseStats()
         setupClickListeners()
@@ -55,6 +56,7 @@ class ProfileActivity : NavSetup() {
         // only changes when the user explicitly edits it
         dbRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                setLoadingState(isLoading = false)
                 if (snapshot.exists()) {
                     val user = snapshot.getValue(User::class.java)
                     if (user != null) {
@@ -76,7 +78,9 @@ class ProfileActivity : NavSetup() {
                 }
             }
 
-            override fun onCancelled(error: DatabaseError) {}
+            override fun onCancelled(error: DatabaseError) {
+                setLoadingState(isLoading = false)
+            }
         })
     }
 
@@ -102,6 +106,7 @@ class ProfileActivity : NavSetup() {
 
         userRootRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                setLoadingState(isLoading = false)
                 var totalSpent = 0.0
                 var transactionCount = 0
 
@@ -133,6 +138,7 @@ class ProfileActivity : NavSetup() {
             }
 
             override fun onCancelled(error: DatabaseError) {
+                setLoadingState(isLoading = false)
                 Toast.makeText(this@ProfileActivity, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
             }
         })

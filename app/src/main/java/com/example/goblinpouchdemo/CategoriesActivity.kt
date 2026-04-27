@@ -34,6 +34,7 @@ class CategoriesActivity: NavSetup() {
 
         navBinding.header.tvPageTitle.text = "Categories"
 
+        setLoadingState(isLoading = true)
         setupRecyclerView()
         listenForData()
 
@@ -90,10 +91,12 @@ class CategoriesActivity: NavSetup() {
                 runOnUiThread {
                     adapter.submitList(newList)
                     updateGrandTotalUI(totalMonthSpent, totalMonthBudget)
+                    setLoadingState(false)
                 }
 
             }
             override fun onCancelled(error: DatabaseError) {
+                setLoadingState(false)
                 Toast.makeText(this@CategoriesActivity, "Failed to load categories", Toast.LENGTH_SHORT).show()
             }
         })

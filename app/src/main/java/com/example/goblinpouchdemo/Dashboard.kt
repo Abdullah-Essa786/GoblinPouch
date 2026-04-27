@@ -53,7 +53,7 @@ class Dashboard : NavSetup() {
     }
 
     private fun fetchBudget(){
-
+        setLoadingState(isLoading = true)
         dbRef.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
 
@@ -90,6 +90,7 @@ class Dashboard : NavSetup() {
                 }
                 updateBudgetUi(totalMonthlySpent, monthlyBudget)
                 updateCategoryLists(categorySpending, categoryBudget, snapshot)
+                setLoadingState(isLoading = false)
             }
 
             override fun onCancelled(error: DatabaseError) {
