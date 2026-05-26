@@ -3,6 +3,7 @@ package com.example.goblinpouchdemo
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.goblinpouchdemo.databinding.ActivityExpensesBinding
 import com.example.goblinpouchdemo.models.ExpenseCategory
@@ -54,10 +55,12 @@ class CreateExpensesActivity : AppCompatActivity() {
                 categoryId = selectedCategory.id   // FIXED
             )
 
+            playGoblinAnimation()
             Toast.makeText(this, "Expense created", Toast.LENGTH_SHORT).show()
 
             clearFields()
         }
+
     }
 
     private fun loadCategories() {
@@ -95,5 +98,29 @@ class CreateExpensesActivity : AppCompatActivity() {
         binding.etExpenseDescription.text.clear()
         binding.etExpenseAmount.text.clear()
         binding.etExpenseDate.text.clear()
+    }
+
+    private fun playGoblinAnimation() {
+
+        binding.goblinRunner.visibility = View.VISIBLE
+
+        binding.goblinRunner.translationX = -250f
+
+        binding.goblinRunner.animate()
+            .translationX(700f)
+            .setDuration(1200)
+            .withEndAction {
+
+                binding.goldBag.visibility = View.INVISIBLE
+
+                binding.goblinRunner.animate()
+                    .translationX(1200f)
+                    .setDuration(1000)
+                    .withEndAction {
+
+                        binding.goblinRunner.visibility = View.GONE
+                        binding.goldBag.visibility = View.VISIBLE
+                    }
+            }
     }
 }

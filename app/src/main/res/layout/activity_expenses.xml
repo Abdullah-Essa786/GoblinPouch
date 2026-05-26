@@ -104,4 +104,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp"/>
 
+    <!-- Gold Bag -->
+    <ImageView
+        android:id="@+id/goldBag"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/gold_bag"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Goblin runner -->
+    <ImageView
+        android:id="@+id/goblinRunner"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@drawable/goblin_runner"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
